@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -11,18 +12,29 @@ import CartDrawer from "@/components/CartDrawer";
 import WelcomePopup from "@/components/WelcomePopup";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Home from "@/pages/Home";
-import Shop from "@/pages/Shop";
-import ProductDetail from "@/pages/ProductDetail";
-import OurStory from "@/pages/OurStory";
-import Contact from "@/pages/Contact";
-import FAQ from "@/pages/FAQ";
-import TrackOrder from "@/pages/TrackOrder";
-import ShippingPolicy from "@/pages/ShippingPolicy";
-import ReturnsRefunds from "@/pages/ReturnsRefunds";
-import PrivacyPolicy from "@/pages/PrivacyPolicy";
-import TermsOfService from "@/pages/TermsOfService";
 import { Outlet } from "react-router-dom";
+
+// Route-level code splitting: each page ships in its own chunk so the first
+// load (critical on mobile networks) only downloads the shell + home.
+const Home = lazy(() => import("@/pages/Home"));
+const Shop = lazy(() => import("@/pages/Shop"));
+const ProductDetail = lazy(() => import("@/pages/ProductDetail"));
+const OurStory = lazy(() => import("@/pages/OurStory"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const FAQ = lazy(() => import("@/pages/FAQ"));
+const TrackOrder = lazy(() => import("@/pages/TrackOrder"));
+const ShippingPolicy = lazy(() => import("@/pages/ShippingPolicy"));
+const ReturnsRefunds = lazy(() => import("@/pages/ReturnsRefunds"));
+const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("@/pages/TermsOfService"));
+
+function PageFallback() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="font-display text-3xl tracking-[0.25em] text-foreground animate-fade-in">AUREVA</div>
+    </div>
+  );
+}
 
 function Layout() {
   return (
@@ -58,6 +70,7 @@ const AuthenticatedApp = () => {
 
   return (
     <CartProvider>
+      <Suspense fallback={<PageFallback />}>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
@@ -75,6 +88,7 @@ const AuthenticatedApp = () => {
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      </Suspense>
     </CartProvider>
   );
 };

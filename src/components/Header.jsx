@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import CartButton from "@/components/CartButton";
+import SearchOverlay from "@/components/SearchOverlay";
 
 const HERO_SLUG = "build-your-story-charm-necklace";
 
@@ -14,6 +15,7 @@ const NAV = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -53,12 +55,18 @@ export default function Header() {
                 {n.label}
               </Link>
             ))}
+            <button onClick={() => setSearchOpen(true)} aria-label="Search" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground/80 hover:text-foreground transition-colors">
+              <Search size={20} strokeWidth={1.5} />
+            </button>
             <Link to={`/product/${HERO_SLUG}`} className="text-[11px] tracking-wide-sm uppercase bg-foreground text-background px-5 py-2.5 hover:bg-foreground/85 transition-colors">
               Create Yours
             </Link>
           </nav>
 
           <div className="md:hidden flex items-center gap-1 flex-1 justify-end">
+            <button onClick={() => setSearchOpen(true)} aria-label="Search" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground">
+              <Search size={22} strokeWidth={1.5} />
+            </button>
             <CartButton />
           </div>
         </div>
@@ -94,6 +102,7 @@ export default function Header() {
           </div>
         </div>
       )}
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 }
