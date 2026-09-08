@@ -6,6 +6,10 @@ import pluginUnusedImports from "eslint-plugin-unused-imports";
 
 export default [
   {
+    // Reference/docs code, not part of the shipped app — never lint it.
+    ignores: [".agents/**", "dist/**", "public/**"],
+  },
+  {
     files: [
       "src/components/**/*.{js,mjs,cjs,jsx}",
       "src/pages/**/*.{js,mjs,cjs,jsx}",

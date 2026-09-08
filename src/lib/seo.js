@@ -44,7 +44,9 @@ export function currencyCode(formattedAmount, fallback = "USD") {
 /* ---------------------------------------------------------------------------
  * Schema.org builders (JSON-LD, from real data only — never fabricated).
  * ------------------------------------------------------------------------ */
-export function organizationSchema({ url, image } = {}) {
+export function organizationSchema(
+  /** @type {{ url?: string, image?: string }} */ { url, image } = {}
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -135,6 +137,9 @@ function upsertHead(tag, attrs, id, textContent) {
   return el;
 }
 
+/**
+ * @param {{ title?: string, description?: string, canonicalPath?: string | null, ogImage?: string, ogType?: string, jsonLd?: object | object[], robots?: string }} props
+ */
 export function Seo({ title, description, canonicalPath, ogImage, ogType = "website", jsonLd, robots = "index, follow" }) {
   const jsonLdKey = JSON.stringify(jsonLd ?? null);
 

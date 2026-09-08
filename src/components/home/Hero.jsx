@@ -29,7 +29,7 @@ export default function Hero() {
         </div>
         <div className="order-1 lg:order-2 relative">
           <div className="aspect-[4/5] lg:aspect-[4/5] w-full overflow-hidden bg-secondary">
-            <Image src={HERO_IMG} alt="Woman wearing the AUREVA Build Your Story charm necklace" fittingType="fill" className="w-full h-full" loading="eager" />
+            <Image src={HERO_IMG} alt="Woman wearing the AUREVA Build Your Story charm necklace" fittingType="fill" className="w-full h-full" />
           </div>
         </div>
       </div>

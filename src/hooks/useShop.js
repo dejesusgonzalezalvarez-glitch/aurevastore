@@ -9,7 +9,7 @@ export function useShop({ pageSize = 24 } = {}) {
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [sort, setSort] = useState("featured");
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState(/** @type {Record<string, any>} */ ({}));
   const [attempt, setAttempt] = useState(0);
   const [page, setPage] = useState({ key: null, products: null, cursor: null, error: null, loadingMore: false });
   const generation = useRef(0);
