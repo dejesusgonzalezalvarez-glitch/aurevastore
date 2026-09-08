@@ -49,10 +49,11 @@ export default function Shop() {
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-5 border-b hairline">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="-mx-5 px-5 sm:mx-0 sm:px-0 overflow-x-auto sm:overflow-visible">
+        <div className="flex sm:flex-wrap items-center gap-2 w-max sm:w-auto">
           <Link
             to="/shop"
-            className={`text-[11px] tracking-wide-sm uppercase px-4 py-2 transition-colors ${!category ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
+            className={`text-[11px] tracking-wide-sm uppercase px-4 min-h-[44px] inline-flex items-center whitespace-nowrap transition-colors ${!category ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
           >
             All
           </Link>
@@ -60,11 +61,12 @@ export default function Shop() {
             <Link
               key={c.id}
               to={`/shop/${c.slug}`}
-              className={`text-[11px] tracking-wide-sm uppercase px-4 py-2 transition-colors ${category?.id === c.id ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
+              className={`text-[11px] tracking-wide-sm uppercase px-4 min-h-[44px] inline-flex items-center whitespace-nowrap transition-colors ${category?.id === c.id ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
             >
               {c.name}
             </Link>
           ))}
+        </div>
         </div>
         <div className="flex items-center gap-3">
           <label className="text-[11px] tracking-wide-sm uppercase text-muted-foreground" htmlFor="sort">Sort</label>
@@ -72,7 +74,7 @@ export default function Shop() {
             id="sort"
             value={s.sort}
             onChange={(e) => s.setSort(e.target.value)}
-            className="bg-transparent border-b hairline focus:border-foreground text-sm py-2 outline-none cursor-pointer"
+            className="bg-transparent border-b hairline focus:border-foreground text-base sm:text-sm py-2 min-h-[44px] outline-none cursor-pointer"
           >
             {Object.entries(SORTS).map(([key, v]) => (
               <option key={key} value={key}>{v.label}</option>
