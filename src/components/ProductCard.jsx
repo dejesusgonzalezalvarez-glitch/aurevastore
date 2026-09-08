@@ -18,12 +18,12 @@ export default function ProductCard({ product }) {
     <Link to={`/product/${product.slug}`} className="group block">
       <div className="relative aspect-square bg-secondary overflow-hidden">
         {image ? (
-          <img src={image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+          <img src={image} alt={product.name} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground/40 text-xs">AUREVA</div>
         )}
         {hoverImage && (
-          <img src={hoverImage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <img src={hoverImage} alt="" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         )}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {leftBadges.map((b) => (

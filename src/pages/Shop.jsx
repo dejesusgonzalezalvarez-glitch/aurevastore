@@ -1,33 +1,69 @@
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { useShop, SORTS } from "@/hooks/useShop";
 import ProductGrid from "@/components/ProductGrid";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { Seo } from "@/lib/seo";
 
 export default function Shop() {
+  const { categorySlug } = useParams();
   const s = useShop({ pageSize: 24 });
+
+  // Keep the URL (collection route) and the active category in sync.
+  useEffect(() => {
+    if (!s.categories.length) return;
+    const match = categorySlug ? s.categories.find((c) => c.slug === categorySlug) : null;
+    const targetId = match ? match.id : null;
+    if ((s.activeCategory?.id ?? null) !== targetId) {
+      s.setActiveCategory(match || null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categorySlug, s.categories]);
+
+  const category = s.categories.find((c) => c.slug === categorySlug) || null;
+  const heading = category ? category.name : "Shop AUREVA";
+  const intro = category?.description
+    ? category.description
+    : "Personalized necklaces and charms designed to be worn, layered and loved — every one with meaning.";
 
   return (
     <div className="mx-auto max-w-7xl px-5 sm:px-8 py-16 sm:py-24">
-      <div className="text-center mb-12">
+      <Seo
+        title={category ? `${category.name} | AUREVA` : "Shop Personalized Jewelry — AUREVA"}
+        description={intro}
+        canonicalPath={category ? `/shop/${category.slug}` : "/shop"}
+      />
+
+      <Breadcrumbs
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Shop", path: "/shop" },
+          ...(category ? [{ name: category.name }] : []),
+        ]}
+      />
+
+      <div className="text-center mb-12 mt-8">
         <p className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-4">The Collection</p>
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-light text-foreground">Shop AUREVA</h1>
-        <p className="mt-5 text-muted-foreground max-w-md mx-auto">Pieces designed to be worn, layered and loved — every one with meaning.</p>
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-light text-foreground">{heading}</h1>
+        <p className="mt-5 text-muted-foreground max-w-md mx-auto">{intro}</p>
       </div>
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-5 border-b hairline">
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => s.setActiveCategory(null)}
-            className={`text-[11px] tracking-wide-sm uppercase px-4 py-2 transition-colors ${!s.activeCategory ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
+          <Link
+            to="/shop"
+            className={`text-[11px] tracking-wide-sm uppercase px-4 py-2 transition-colors ${!category ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
           >
             All
-          </button>
+          </Link>
           {s.categories.map((c) => (
-            <button
+            <Link
               key={c.id}
-              onClick={() => s.setActiveCategory(c)}
-              className={`text-[11px] tracking-wide-sm uppercase px-4 py-2 transition-colors ${s.activeCategory?.id === c.id ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
+              to={`/shop/${c.slug}`}
+              className={`text-[11px] tracking-wide-sm uppercase px-4 py-2 transition-colors ${category?.id === c.id ? "bg-foreground text-background" : "border hairline text-foreground hover:bg-secondary"}`}
             >
               {c.name}
-            </button>
+            </Link>
           ))}
         </div>
         <div className="flex items-center gap-3">

@@ -13,7 +13,7 @@ export default function Hero() {
         <div className="order-2 lg:order-1 max-w-xl animate-fade-up">
           <p className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-6">Build Your Story™ Charm Necklace</p>
           <h1 className="font-display text-[2.5rem] sm:text-6xl lg:text-7xl font-light leading-[1.05] text-foreground text-balance">
-            More than jewelry.<br /><span className="italic">Your story.</span>
+            Personalized jewelry that<br /><span className="italic">tells your story.</span>
           </h1>
           <p className="mt-7 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md">
             Create a necklace that represents the people, memories and moments that matter most to you.
@@ -29,7 +29,7 @@ export default function Hero() {
         </div>
         <div className="order-1 lg:order-2 relative">
           <div className="aspect-[4/5] lg:aspect-[4/5] w-full overflow-hidden bg-secondary">
-            <Image src={HERO_IMG} alt="Woman wearing the AUREVA Build Your Story charm necklace" fittingType="fill" className="w-full h-full" />
+            <Image src={HERO_IMG} alt="Woman wearing the AUREVA Build Your Story charm necklace" fittingType="fill" className="w-full h-full" loading="eager" />
           </div>
         </div>
       </div>

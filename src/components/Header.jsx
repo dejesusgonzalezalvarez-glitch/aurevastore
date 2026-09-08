@@ -9,7 +9,6 @@ const NAV = [
   { label: "Shop", to: "/shop" },
   { label: "Build Your Story", to: `/product/${HERO_SLUG}` },
   { label: "Our Story", to: "/our-story" },
-  { label: "Gifts", to: "/shop" },
 ];
 
 export default function Header() {

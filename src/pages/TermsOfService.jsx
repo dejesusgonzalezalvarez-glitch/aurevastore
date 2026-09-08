@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import PolicyPage from "@/components/PolicyPage";
+import { Seo } from "@/lib/seo";
 
 export default function TermsOfService() {
   return (
-    <PolicyPage eyebrow="Legal" title="Terms of Service">
+    <>
+      <Seo
+        title="Terms of Service — AUREVA"
+        description="Terms of service for using the AUREVA store."
+        canonicalPath="/terms-of-service"
+      />
+      <PolicyPage eyebrow="Legal" title="Terms of Service">
       <Section title="Use of the Store">
         <p>By accessing and using this store, you agree to these terms. Please use our site lawfully and with respect for others.</p>
       </Section>
@@ -37,6 +44,7 @@ export default function TermsOfService() {
         </div>
       </Section>
     </PolicyPage>
+    </>
   );
 }
 

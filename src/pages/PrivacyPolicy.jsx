@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import PolicyPage from "@/components/PolicyPage";
+import { Seo } from "@/lib/seo";
 
 export default function PrivacyPolicy() {
   return (
-    <PolicyPage eyebrow="Legal" title="Privacy Policy">
+    <>
+      <Seo
+        title="Privacy Policy — AUREVA"
+        description="How AUREVA collects, uses and protects your information."
+        canonicalPath="/privacy-policy"
+      />
+      <PolicyPage eyebrow="Legal" title="Privacy Policy">
       <Section title="Information We Collect">
         <p>We collect information you provide directly — such as your name, email, shipping address and payment details when you place an order or contact us — as well as information gathered automatically, such as browsing and device data.</p>
       </Section>
@@ -37,6 +44,7 @@ export default function PrivacyPolicy() {
         </div>
       </Section>
     </PolicyPage>
+    </>
   );
 }
 

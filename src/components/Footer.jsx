@@ -27,7 +27,6 @@ const COLS = [
     title: "About",
     links: [
       { label: "Our Story", to: "/our-story" },
-      { label: "Journal", to: "/our-story" },
     ],
   },
   {

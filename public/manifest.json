@@ -1,0 +1,17 @@
+{
+  "name": "AUREVA — Wear Your Story",
+  "short_name": "AUREVA",
+  "description": "Personalized jewelry that tells your story. Build your own charm necklace with the people, memories and moments that matter most.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f1ea",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

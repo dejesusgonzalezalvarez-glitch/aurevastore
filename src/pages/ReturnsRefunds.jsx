@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import PolicyPage from "@/components/PolicyPage";
+import { Seo } from "@/lib/seo";
 
 export default function ReturnsRefunds() {
   return (
-    <PolicyPage eyebrow="Returns" title="Returns & Refunds">
+    <>
+      <Seo
+        title="Returns & Refunds — AUREVA"
+        description="AUREVA returns and refunds policy for standard and personalized jewelry."
+        canonicalPath="/returns"
+      />
+      <PolicyPage eyebrow="Returns" title="Returns & Refunds">
       <Section title="Our Approach">
         <p>We want you to love your AUREVA piece. If something isn't right, we're here to help. Please review the conditions below.</p>
       </Section>
@@ -28,6 +35,7 @@ export default function ReturnsRefunds() {
         <p>Once your return is received and inspected, an eligible refund will be issued to your original payment method. Processing times depend on your bank or payment provider.</p>
       </Section>
     </PolicyPage>
+    </>
   );
 }
 

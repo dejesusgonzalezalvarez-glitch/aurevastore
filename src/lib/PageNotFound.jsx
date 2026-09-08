@@ -4,6 +4,8 @@ import { useLocation } from 'react-router-dom';
 
 import { useQuery } from '@tanstack/react-query';
 
+import { Seo } from '@/lib/seo';
+
 export default function PageNotFound({}) {
     const location = useLocation();
     const pageName = location.pathname.substring(1);
@@ -22,6 +24,7 @@ export default function PageNotFound({}) {
     
     return (
         <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
+            <Seo title="Page Not Found — AUREVA" description="This page could not be found." robots="noindex, follow" />
             <div className="max-w-md w-full">
                 <div className="text-center space-y-6">
                     {/* 404 Error Code */}

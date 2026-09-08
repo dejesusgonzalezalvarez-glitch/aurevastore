@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useProductDetail } from "@/hooks/useProductDetail";
 import { useVariantOptions } from "@/hooks/useVariantOptions";
-import { productGallery } from "@/lib/storeImage";
+import { productGallery, productImage } from "@/lib/storeImage";
 import { useCart } from "@/context/CartContext";
-
-const HERO_SLUG = "build-your-story-charm-necklace";
+import { Seo, productSchema, breadcrumbSchema, currencyCode, truncate } from "@/lib/seo";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import RelatedProducts from "@/components/RelatedProducts";
 
 const BUNDLES = [
   { name: "Start Your Story", detail: "1 Charm", featured: false },
@@ -49,6 +50,13 @@ export default function ProductDetail() {
   const gallery = images.length ? images : (d.focusMediaUrl ? [{ url: d.focusMediaUrl, altText: d.product.name }] : []);
   const focus = d.focusMediaUrl || gallery[activeImg]?.url || gallery[0]?.url;
 
+  const ogImage = focus || productImage(d.product);
+  const seoTitle = `${d.product.name} | AUREVA`;
+  const seoDescription = truncate(d.product.plainDescription, 155) ||
+    "A personalized piece by AUREVA made to represent the people, memories and moments that matter most.";
+  const seoPrice = d.variant?.price?.actualPrice?.amount ?? d.product?.actualPriceRange?.minValue?.amount ?? "";
+  const seoCurrency = d.variant?.price?.actualPrice?.currency || d.product?.currency || currencyCode(d.price);
+
   async function buyNow() {
     if (!d.product || !d.canAdd || d.adding || cartLoading) return;
     const result = await d.submit();
@@ -58,12 +66,44 @@ export default function ProductDetail() {
 
   return (
     <div className="mx-auto max-w-7xl px-5 sm:px-8 py-8 sm:py-16">
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
+      <Seo
+        title={seoTitle}
+        description={seoDescription}
+        canonicalPath={`/product/${slug}`}
+        ogImage={ogImage}
+        ogType="product"
+        jsonLd={[
+          productSchema({
+            name: d.product.name,
+            image: ogImage,
+            description: d.product.plainDescription,
+            url: `/product/${slug}`,
+            price: seoPrice,
+            priceCurrency: seoCurrency,
+            availability: d.inStock ? "IN_STOCK" : "OUT_OF_STOCK",
+            sku: d.variant?.sku || d.product?.sku,
+            brand: "AUREVA",
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Shop", path: "/shop" },
+            { name: d.product.name },
+          ]),
+        ]}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Shop", path: "/shop" },
+          { name: d.product.name },
+        ]}
+      />
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 mt-8">
         {/* Gallery */}
         <div className="lg:sticky lg:top-24 lg:self-start">
           <div className="aspect-square bg-secondary overflow-hidden">
             {focus ? (
-              <img src={focus} alt={d.product.name} className="w-full h-full object-cover" />
+              <img src={focus} alt={`${d.product.name} — personalized jewelry by AUREVA`} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground/40 font-display text-2xl">AUREVA</div>
             )}
@@ -72,7 +112,7 @@ export default function ProductDetail() {
             <div className="flex gap-3 mt-4 overflow-x-auto">
               {gallery.map((g, i) => (
                 <button key={i} onClick={() => setActiveImg(i)} className={`w-20 h-20 shrink-0 overflow-hidden border ${focus === g.url ? "border-foreground" : "hairline"}`}>
-                  <img src={g.url} alt={g.altText} className="w-full h-full object-cover" />
+                  <img src={g.url} alt={g.altText} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -204,15 +244,8 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* Upsell */}
-      <div className="mt-20 sm:mt-28 border-t hairline pt-16 text-center">
-        <h2 className="font-display text-3xl sm:text-4xl font-light text-foreground">Complete Your Story</h2>
-        <p className="mt-4 text-muted-foreground max-w-md mx-auto">Add another charm and make it even more personal.</p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link to="/shop" className="text-[11px] tracking-wide-sm uppercase bg-foreground text-background px-8 py-4 hover:bg-foreground/85 transition-colors">Shop Charms</Link>
-          <Link to={`/product/${HERO_SLUG}`} className="text-[11px] tracking-wide-sm uppercase border hairline text-foreground px-8 py-4 hover:bg-secondary transition-colors">Keep Building</Link>
-        </div>
-      </div>
+      {/* Related products */}
+      <RelatedProducts product={d.product} />
     </div>
   );
 }

@@ -1,12 +1,18 @@
 const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
 
 import { Image } from "@/components/ui/image";
+import { Seo } from "@/lib/seo";
 
 const ABOUT_IMG = "https://media.db.com/images/public/6aa02f3f8ca31c6d03cd120c/c44b6cbcc_generated_07c01305.jpg";
 
 export default function OurStory() {
   return (
     <div>
+      <Seo
+        title="Our Story — AUREVA | Jewelry With Meaning"
+        description="The story behind AUREVA: why we create personalized jewelry designed to represent the people, memories and moments that matter most."
+        canonicalPath="/our-story"
+      />
       <div className="relative aspect-[16/9] sm:aspect-[21/9] bg-secondary overflow-hidden">
         <Image src={ABOUT_IMG} alt="A woman clasping her AUREVA necklace" fittingType="fill" className="w-full h-full" />
       </div>

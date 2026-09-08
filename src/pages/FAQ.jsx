@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Seo, faqSchema } from "@/lib/seo";
 
 const SECTIONS = [
   {
@@ -35,8 +36,15 @@ const SECTIONS = [
 ];
 
 export default function FAQ() {
+  const allQuestions = SECTIONS.flatMap((s) => s.items);
   return (
     <div className="mx-auto max-w-3xl px-5 sm:px-8 py-20 sm:py-28">
+      <Seo
+        title="FAQ — AUREVA | Personalized Jewelry Help"
+        description="Answers about personalized jewelry, how personalization works, shipping, returns and order tracking at AUREVA."
+        canonicalPath="/faq"
+        jsonLd={[faqSchema(allQuestions)]}
+      />
       <div className="text-center mb-16">
         <p className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-4">Help Center</p>
         <h1 className="font-display text-4xl sm:text-5xl font-light text-foreground">Frequently Asked Questions</h1>

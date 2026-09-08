@@ -1,8 +1,15 @@
 import PolicyPage from "@/components/PolicyPage";
+import { Seo } from "@/lib/seo";
 
 export default function ShippingPolicy() {
   return (
-    <PolicyPage eyebrow="Shipping" title="Shipping Policy">
+    <>
+      <Seo
+        title="Shipping Policy — AUREVA"
+        description="AUREVA shipping policy: order processing, delivery times and tracking for personalized jewelry."
+        canonicalPath="/shipping-policy"
+      />
+      <PolicyPage eyebrow="Shipping" title="Shipping Policy">
       <Section title="Order Processing">
         <p>All orders require a processing period before shipment, as each piece is carefully prepared and, where applicable, personalized to your selections. You'll receive a confirmation email once your order has been placed and another when it ships.</p>
       </Section>
@@ -23,6 +30,7 @@ export default function ShippingPolicy() {
         <p>While we work to deliver within the estimated timeframes, external factors such as carrier delays, customs, weather or peak seasons can affect delivery times and are outside our control. We appreciate your patience.</p>
       </Section>
     </PolicyPage>
+    </>
   );
 }
 

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap location — replace the domain with your live store domain.
+Sitemap: https://www.aureva.com/sitemap.xml

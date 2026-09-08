@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Seo } from "@/lib/seo";
 
 const CATEGORIES = ["Order Question", "Shipping", "Returns", "Product Question", "Other"];
 
@@ -10,6 +11,11 @@ export default function Contact() {
 
   return (
     <div className="mx-auto max-w-2xl px-5 sm:px-8 py-20 sm:py-28">
+      <Seo
+        title="Contact — AUREVA"
+        description="Contact AUREVA for help with personalized jewelry orders, shipping, returns or product questions."
+        canonicalPath="/contact"
+      />
       <div className="text-center mb-14">
         <p className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-4">Contact Us</p>
         <h1 className="font-display text-4xl sm:text-5xl font-light text-foreground">We're here to help.</h1>

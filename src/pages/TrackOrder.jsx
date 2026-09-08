@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Seo } from "@/lib/seo";
 
 export default function TrackOrder() {
   const [order, setOrder] = useState("");
@@ -7,6 +8,11 @@ export default function TrackOrder() {
 
   return (
     <div className="mx-auto max-w-xl px-5 sm:px-8 py-20 sm:py-28">
+      <Seo
+        title="Track Your Order — AUREVA"
+        description="Track your AUREVA order with your order number and email."
+        canonicalPath="/track-order"
+      />
       <div className="text-center mb-14">
         <p className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-4">Order Status</p>
         <h1 className="font-display text-4xl sm:text-5xl font-light text-foreground">Track Your Order</h1>
