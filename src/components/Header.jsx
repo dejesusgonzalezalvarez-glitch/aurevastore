@@ -31,7 +31,7 @@ export default function Header() {
     <header className={`sticky top-0 z-40 bg-background/90 backdrop-blur-md transition-shadow ${scrolled ? "shadow-float" : ""}`}>
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          <button className="md:hidden p-2 -ml-2 text-foreground" onClick={() => setOpen(true)} aria-label="Open menu">
+          <button className="md:hidden p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground" onClick={() => setOpen(true)} aria-label="Open menu">
             <Menu size={22} strokeWidth={1.5} />
           </button>
 
@@ -73,7 +73,7 @@ export default function Header() {
           <div className="absolute top-0 left-0 h-full w-[82%] max-w-sm bg-background shadow-luxe flex flex-col animate-fade-in">
             <div className="flex items-center justify-between px-5 h-16 border-b hairline">
               <span className="font-display text-xl tracking-[0.25em]">AUREVA</span>
-              <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 -mr-2"><X size={20} strokeWidth={1.5} /></button>
+              <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center"><X size={20} strokeWidth={1.5} /></button>
             </div>
             <nav className="flex flex-col px-5 py-4 gap-1">
               {NAV.map((n) => (
@@ -81,10 +81,13 @@ export default function Header() {
                   {n.label}
                 </Link>
               ))}
-              <Link to={`/product/${HERO_SLUG}`} className="mt-5 text-center text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-4">
+              <Link to={`/product/${HERO_SLUG}`} className="mt-5 text-center text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-4 min-h-[44px] flex items-center justify-center">
                 Create Yours
               </Link>
-              <Link to="/contact" className="mt-3 text-center text-[11px] tracking-wide-sm uppercase border hairline py-4 text-foreground">
+              <Link to="/track-order" className="mt-3 text-center text-[11px] tracking-wide-sm uppercase border hairline py-4 min-h-[44px] flex items-center justify-center text-foreground">
+                Track Order
+              </Link>
+              <Link to="/contact" className="mt-3 text-center text-[11px] tracking-wide-sm uppercase border hairline py-4 min-h-[44px] flex items-center justify-center text-foreground">
                 Contact
               </Link>
             </nav>

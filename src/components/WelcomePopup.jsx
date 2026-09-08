@@ -28,8 +28,8 @@ export default function WelcomePopup() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-5 animate-fade-in">
       <div className="absolute inset-0 bg-black/40" onClick={close} />
-      <div className="relative bg-background w-full max-w-md p-10 sm:p-12 text-center shadow-luxe">
-        <button onClick={close} aria-label="Close" className="absolute top-3 right-4 text-muted-foreground text-xl leading-none p-2">×</button>
+      <div className="relative bg-background w-full max-w-md max-h-[90dvh] overflow-y-auto p-10 sm:p-12 text-center shadow-luxe">
+        <button onClick={close} aria-label="Close" className="absolute top-2 right-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-muted-foreground text-xl leading-none p-2">×</button>
         {!unlocked ? (
           <>
             <p className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-4">Welcome to AUREVA</p>
@@ -43,7 +43,7 @@ export default function WelcomePopup() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 aria-label="Email address"
-                className="border-b hairline focus:border-foreground py-3 text-sm text-center outline-none transition-colors"
+                className="border-b hairline focus:border-foreground py-3 text-base text-center outline-none transition-colors"
               />
               <button type="submit" className="text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-4 hover:bg-foreground/85 transition-colors">
                 Unlock my 10% off

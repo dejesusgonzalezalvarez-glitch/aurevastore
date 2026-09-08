@@ -7,6 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { Seo, productSchema, breadcrumbSchema, currencyCode, truncate } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedProducts from "@/components/RelatedProducts";
+import StickyAddToCart from "@/components/StickyAddToCart";
 
 const BUNDLES = [
   { name: "Start Your Story", detail: "1 Charm", featured: false },
@@ -246,6 +247,13 @@ export default function ProductDetail() {
 
       {/* Related products */}
       <RelatedProducts product={d.product} />
+      <StickyAddToCart
+        product={d.product}
+        price={d.price}
+        canAdd={d.canAdd}
+        adding={d.adding}
+        onAdd={() => d.submit()}
+      />
     </div>
   );
 }

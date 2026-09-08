@@ -39,6 +39,12 @@ export default function ProductCard({ product }) {
             Quick Add
           </button>
         )}
+        {isQuickAddable && !isSoldOut && (
+          <button onClick={(e) => { e.stopPropagation(); quickAdd(e); }} disabled={loading} aria-label={`Quick add ${product.name}`}
+            className="sm:hidden absolute bottom-3 right-3 w-11 h-11 rounded-full bg-foreground text-background text-xl leading-none shadow-luxe disabled:opacity-60">
+            +
+          </button>
+        )}
       </div>
       <div className="pt-4">
         <h3 className="font-display text-lg leading-snug text-foreground">{product.name}</h3>

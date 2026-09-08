@@ -97,7 +97,7 @@
 
 @layer components {
   .contact-input {
-    @apply w-full border-b hairline focus:border-foreground py-3 text-sm text-foreground bg-transparent outline-none transition-colors;
+    @apply w-full border-b hairline focus:border-foreground py-3 text-base sm:text-sm text-foreground bg-transparent outline-none transition-colors;
   }
   .prose-policy ul {
     @apply list-disc pl-5 space-y-1.5 my-3;

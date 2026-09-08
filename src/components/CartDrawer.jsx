@@ -51,7 +51,7 @@ export default function CartDrawer() {
         <header className="flex justify-between items-center p-4 border-b border-border">
           <strong className="font-display">Your cart{lineItems.length ? ` (${lineItems.length})` : ""}</strong>
           <button onClick={() => setIsOpen(false)} aria-label="Close cart"
-            className="border-none bg-transparent cursor-pointer text-xl text-muted-foreground">×</button>
+            className="border-none bg-transparent cursor-pointer text-xl text-muted-foreground min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
         </header>
 
         {error && (
@@ -74,7 +74,7 @@ export default function CartDrawer() {
               </svg>
               <p className="m-0 text-muted-foreground">Your cart is empty.</p>
               <button onClick={() => setIsOpen(false)}
-                className="border border-border bg-card text-foreground rounded-sm py-2 px-4 cursor-pointer text-sm">Continue shopping</button>
+                className="border border-border bg-card text-foreground rounded-sm py-2 px-4 min-h-[44px] cursor-pointer text-sm">Continue shopping</button>
             </div>
           ) : lineItems.map((item) => {
             const image = storeImage(item.attributes?.image?.url);
@@ -144,6 +144,6 @@ export default function CartDrawer() {
 function QtyButton({ children, onClick, disabled, label }) {
   return (
     <button onClick={onClick} disabled={disabled} aria-label={label}
-      className="w-7 h-7 cursor-pointer leading-none bg-card text-foreground border border-border rounded-sm disabled:opacity-40 disabled:cursor-not-allowed">{children}</button>
+      className="w-11 h-11 cursor-pointer leading-none bg-card text-foreground border border-border rounded-sm disabled:opacity-40 disabled:cursor-not-allowed">{children}</button>
   );
 }

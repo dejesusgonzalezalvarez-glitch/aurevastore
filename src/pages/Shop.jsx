@@ -48,6 +48,17 @@ export default function Shop() {
         <p className="mt-5 text-muted-foreground max-w-md mx-auto">{intro}</p>
       </div>
 
+      <div className="mb-6">
+        <input
+          type="search"
+          value={s.filters.search ?? ""}
+          onChange={(e) => s.setFilters({ ...s.filters, search: e.target.value })}
+          placeholder="Search the collection…"
+          aria-label="Search products"
+          className="w-full border-b hairline focus:border-foreground py-3 min-h-[44px] text-base bg-transparent outline-none transition-colors placeholder:text-muted-foreground/60"
+        />
+      </div>
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-5 border-b hairline">
         <div className="-mx-5 px-5 sm:mx-0 sm:px-0 overflow-x-auto sm:overflow-visible">
         <div className="flex sm:flex-wrap items-center gap-2 w-max sm:w-auto">

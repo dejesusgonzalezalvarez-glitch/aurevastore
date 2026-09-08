@@ -62,7 +62,7 @@ export default function Footer() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               aria-label="Email address"
-              className="flex-1 bg-transparent border-b border-background/30 focus:border-background px-0 py-3 text-sm placeholder:text-background/40 outline-none transition-colors"
+              className="flex-1 bg-transparent border-b border-background/30 focus:border-background px-0 py-3 text-base sm:text-sm placeholder:text-background/40 outline-none transition-colors"
             />
             <button type="submit" className="text-[11px] tracking-wide-sm uppercase border border-background px-7 py-3.5 hover:bg-background hover:text-foreground transition-colors">
               {done ? "Welcome ✦" : "Subscribe"}
