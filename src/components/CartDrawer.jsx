@@ -13,6 +13,7 @@
 //   at checkout.
 // • `status` is flagged per line here because checkout() refuses the whole cart when any item isn't
 //   IN_STOCK — showing it on the row is what makes that refusal understandable.
+// • `safeArea` padding via env(safe-area-inset-*) for iPhone Dynamic Island / home indicator.
 import { useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { storeImage } from "@/lib/storeImage";
@@ -45,13 +46,24 @@ export default function CartDrawer() {
   if (!isOpen) return null;
 
   return (
-    <div onClick={() => setIsOpen(false)} className="fixed inset-0 z-50 bg-black/40 flex justify-end">
-      <aside onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Your cart"
-        className="w-[min(420px,100%)] h-full flex flex-col bg-background text-foreground border-l border-border font-body">
+    <div
+      onClick={() => setIsOpen(false)}
+      className="fixed inset-0 z-50 bg-black/40 flex justify-end"
+      style={{
+        paddingBottom: "env(safe-area-inset-bottom)",
+      }}
+    >
+      <aside
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Your cart"
+        className="w-[min(420px,100%)] h-full flex flex-col bg-background text-foreground border-l border-border font-body safe-area-inset-end"
+      >
         <header className="flex justify-between items-center p-4 border-b border-border">
           <strong className="font-display">Your cart{lineItems.length ? ` (${lineItems.length})` : ""}</strong>
           <button onClick={() => setIsOpen(false)} aria-label="Close cart"
-            className="border-none bg-transparent cursor-pointer text-xl text-muted-foreground min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
+            className="border-none bg-transparent cursor-pointer text-2xl font-display min-w-[44px] min-h-[44px] flex items-center justify-center">×</button>
         </header>
 
         {error && (
@@ -59,12 +71,12 @@ export default function CartDrawer() {
             <div className="flex items-start gap-2">
               <span className="flex-1">{error}</span>
               <button onClick={clearError} aria-label="Dismiss"
-                className="border-none bg-transparent cursor-pointer text-muted-foreground leading-none">×</button>
+                className="border-none bg-transparent cursor-pointer text-foreground leading-none">×</button>
             </div>
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 safe-area-inset-start">
           {lineItems.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center gap-3 py-10">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
@@ -119,23 +131,23 @@ export default function CartDrawer() {
               </div>
             );
           })}
-        </div>
 
-        {lineItems.length > 0 && (
-          <footer className="p-4 border-t border-border flex flex-col gap-3">
-            {subtotal && (
-              <div className="flex justify-between items-baseline">
-                <span className="text-muted-foreground">Subtotal</span>
-                <strong className="text-[17px]">{subtotal}</strong>
-              </div>
-            )}
-            <p className="m-0 text-[12px] text-muted-foreground">Shipping and taxes are calculated at checkout.</p>
-            <button disabled={loading || unavailable.length > 0} onClick={checkout}
-              className="w-full p-3 bg-primary text-primary-foreground border-none rounded-sm text-[15px] font-semibold cursor-pointer disabled:cursor-not-allowed disabled:opacity-60">
-              {loading ? "Working…" : unavailable.length > 0 ? "Remove unavailable items to continue" : "Checkout"}
-            </button>
-          </footer>
-        )}
+          {lineItems.length > 0 && (
+            <footer className="p-4 border-t border-border flex flex-col gap-3">
+              {subtotal && (
+                <div className="flex justify-between items-baseline">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <strong className="text-[15px]">{subtotal}</strong>
+                </div>
+              )}
+              <p className="m-0 text-[11px] text-muted-foreground">Shipping and taxes are calculated at checkout.</p>
+              <button disabled={loading || unavailable.length > 0} onClick={checkout}
+                className="w-full p-3 bg-primary text-primary-foreground border-none rounded-sm text-[14px] font-semibold cursor-pointer disabled:cursor-not-allowed disabled:opacity-50">
+                {loading ? "Working…" : unavailable.length > 0 ? "Remove unavailable items to continue" : "Checkout"}
+              </button>
+            </footer>
+          )}
+        </div>
       </aside>
     </div>
   );

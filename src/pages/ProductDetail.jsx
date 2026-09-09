@@ -35,14 +35,11 @@ export default function ProductDetail() {
     </div>
   );
   if (!d.product) return (
-    <div className="mx-auto max-w-7xl px-5 sm:px-8 py-32">
-      <div className="grid lg:grid-cols-2 gap-12">
-        <div className="aspect-square bg-secondary animate-pulse" />
-        <div className="space-y-4">
-          <div className="h-8 bg-secondary animate-pulse w-3/4" />
-          <div className="h-4 bg-secondary animate-pulse w-1/3" />
-          <div className="h-32 bg-secondary animate-pulse" />
-        </div>
+    <div className="mx-auto max-w-7xl px-5 py-32">
+      <div className="space-y-4">
+        <div className="h-8 bg-secondary animate-pulse w-full" />
+        <div className="h-4 bg-secondary animate-pulse w-full" />
+        <div className="h-32 bg-secondary animate-pulse w-full" />
       </div>
     </div>
   );
@@ -66,7 +63,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-5 sm:px-8 py-8 sm:py-16">
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:py-16">
       <Seo
         title={seoTitle}
         description={seoDescription}
@@ -99,10 +96,11 @@ export default function ProductDetail() {
           { name: d.product.name },
         ]}
       />
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 mt-8">
-        {/* Gallery */}
-        <div className="lg:sticky lg:top-24 lg:self-start">
-          <div className="aspect-square bg-secondary overflow-hidden">
+
+      <div className="space-y-8">
+        {/* 1. Galería / imagen del producto */}
+        <div>
+          <div className="aspect-[4/5] w-full overflow-hidden bg-secondary">
             {focus ? (
               <img src={focus} alt={`${d.product.name} — personalized jewelry by AUREVA`} className="w-full h-full object-cover" />
             ) : (
@@ -120,133 +118,121 @@ export default function ProductDetail() {
           )}
         </div>
 
-        {/* Info */}
+        {/* 2. Nombre */}
         <div>
           <p className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-3">Build Your Story™</p>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-light text-foreground leading-tight">{d.product.name}</h1>
-          <div className="mt-5 flex items-center gap-3">
+          <h1 className="font-display text-2xl lg:text-3xl font-light text-foreground leading-tight">{d.product.name}</h1>
+        </div>
+
+        {/* 3. Precio */}
+        <div className="mt-3">
+          <div className="flex items-center gap-3">
             <span className="text-xl text-foreground">{d.price}</span>
             {d.compareAtPrice && <span className="text-base text-muted-foreground line-through">{d.compareAtPrice}</span>}
           </div>
+        </div>
 
-          {d.product.plainDescription && (
-            <div className="mt-6 text-muted-foreground leading-relaxed text-[15px]" dangerouslySetInnerHTML={{ __html: d.product.plainDescription }} />
-          )}
-          <p className="mt-4 text-[15px] text-foreground font-light italic">
+        {/* 4. Valoración, si existen datos reales */}
+        {d.product.plainDescription && (
+          <p className="mt-2 text-[15px] text-foreground font-light italic">
             A piece made for the people, moments and memories you never want to forget.
           </p>
+        )}
 
-          {/* Options */}
-          {optionGroups.map((g) => (
-            <div key={g.id} className="mt-8">
-              <h3 className="text-[11px] tracking-wide-sm uppercase text-foreground mb-4">{g.name}</h3>
+        {/* 5. Propuesta de valor */}
+        {d.options.length > 0 && !d.variant && (
+          <p className="mt-3 text-sm text-muted-foreground">Please select your options to continue.</p>
+        )}
+
+        {/* 6. Variantes */}
+        {optionGroups.map((g) => (
+          <div key={g.id} className="mt-6">
+            <h3 className="text-[11px] tracking-wide-sm uppercase text-foreground mb-4">{g.name}</h3>
+            <div className="flex flex-wrap gap-3">
+              {g.choices.map((c) => (
+                <button
+                  key={c.choiceId}
+                  disabled={!c.inStock}
+                  onClick={() => d.selectOption(g.id, c.choiceId)}
+                  className={`flex items-center gap-2 px-4 py-3 border text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                    c.selected ? "border-foreground bg-foreground text-background" : "hairline hover:bg-secondary"
+                  }`}
+                >
+                  {c.isColorSwatch && c.colorCode && <span className="w-3 h-3 rounded-full border hairline" style={{ backgroundColor: c.colorCode }} />}
+                  {c.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {/* 7. Personalización, si corresponde */}
+        {modifierGroups.map((m) => (
+          <div key={m.key} className="mt-6">
+            <h3 className="text-[11px] tracking-wide-sm uppercase text-foreground mb-4">
+              {m.name}{m.mandatory && <span className="text-muted-foreground normal-case tracking-normal ml-1">· required</span>}
+            </h3>
+            {m.type === "text" ? (
+              <input
+                type="text"
+                value={m.value}
+                onChange={(e) => d.setModifier(m.key, e.target.value)}
+                placeholder="Enter your text"
+                className="w-full border-b hairline focus:border-foreground py-3 text-sm outline-none transition-colors"
+              />
+            ) : (
               <div className="flex flex-wrap gap-3">
-                {g.choices.map((c) => (
+                {m.choices.map((c) => (
                   <button
-                    key={c.choiceId}
-                    disabled={!c.inStock}
-                    onClick={() => d.selectOption(g.id, c.choiceId)}
-                    className={`flex items-center gap-2 px-4 py-3 border text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-                      c.selected ? "border-foreground bg-foreground text-background" : "hairline hover:bg-secondary"
-                    }`}
+                    key={c.key}
+                    onClick={() => d.setModifier(m.key, c.key)}
+                    className={`px-4 py-3 border text-sm transition-colors ${c.selected ? "border-foreground bg-foreground text-background" : "hairline hover:bg-secondary"}`}
                   >
-                    {c.isColorSwatch && c.colorCode && <span className="w-4 h-4 rounded-full border hairline" style={{ backgroundColor: c.colorCode }} />}
                     {c.name}
                   </button>
                 ))}
               </div>
-            </div>
-          ))}
-
-          {/* Modifiers */}
-          {modifierGroups.map((m) => (
-            <div key={m.key} className="mt-8">
-              <h3 className="text-[11px] tracking-wide-sm uppercase text-foreground mb-4">
-                {m.name}{m.mandatory && <span className="text-muted-foreground normal-case tracking-normal ml-1">· required</span>}
-              </h3>
-              {m.type === "text" ? (
-                <input
-                  type="text"
-                  value={m.value}
-                  onChange={(e) => d.setModifier(m.key, e.target.value)}
-                  placeholder="Enter your text"
-                  className="w-full border-b hairline focus:border-foreground py-3 text-sm outline-none transition-colors"
-                />
-              ) : (
-                <div className="flex flex-wrap gap-3">
-                  {m.choices.map((c) => (
-                    <button
-                      key={c.key}
-                      onClick={() => d.setModifier(m.key, c.key)}
-                      className={`px-4 py-3 border text-sm transition-colors ${c.selected ? "border-foreground bg-foreground text-background" : "hairline hover:bg-secondary"}`}
-                    >
-                      {c.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-
-          {/* Quantity */}
-          <div className="mt-8">
-            <h3 className="text-[11px] tracking-wide-sm uppercase text-foreground mb-4">Quantity</h3>
-            <div className="inline-flex items-center border hairline">
-              <button onClick={() => d.setQuantity(Math.max(1, Number(d.quantity) - 1))} className="w-11 h-11 text-foreground hover:bg-secondary" aria-label="Decrease">−</button>
-              <span className="w-12 text-center text-sm">{d.quantity}</span>
-              <button onClick={() => d.setQuantity(Number(d.quantity) + 1)} className="w-11 h-11 text-foreground hover:bg-secondary" aria-label="Increase">+</button>
-            </div>
+            )}
           </div>
+        ))}
 
-          {/* Selection hint */}
-          {d.options.length > 0 && !d.variant && (
-            <p className="mt-6 text-sm text-muted-foreground">Please select your options to continue.</p>
-          )}
-
-          {/* CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+        {/* 8. CTA "AÑADIR AL CARRITO" */}
+        <div className="mt-6">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => d.submit()}
               disabled={!d.canAdd || d.adding}
-              className="flex-1 text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-4 hover:bg-foreground/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-3 px-4 hover:bg-foreground/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {d.adding ? "Adding…" : "Add to Cart"}
             </button>
             <button
               onClick={buyNow}
               disabled={!d.canAdd || d.adding || cartLoading}
-              className="flex-1 text-[11px] tracking-wide-sm uppercase border hairline text-foreground py-4 hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 text-[11px] tracking-wide-sm uppercase border hairline text-foreground py-3 px-4 hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {cartLoading ? "Working…" : "Buy Now"}
             </button>
           </div>
-
-          {/* Trust */}
-          <div className="mt-8 grid grid-cols-2 gap-3 text-[11px] tracking-wide-sm uppercase text-muted-foreground border hairline p-5">
-            <span>✓ Secure Checkout</span>
-            <span>✓ Easy Returns</span>
-            <span>✓ Selected Materials</span>
-            <span>✓ Track Your Order</span>
-          </div>
-
-          {/* Bundles */}
-          <div className="mt-12">
-            <h3 className="text-[11px] tracking-luxe uppercase text-muted-foreground mb-2">Save more with more charms</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
-              {BUNDLES.map((b) => (
-                <div key={b.name} className={`relative p-5 text-center border ${b.featured ? "border-foreground bg-secondary" : "hairline"}`}>
-                  {b.featured && <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[9px] tracking-luxe uppercase bg-foreground text-background px-3 py-1">Most Loved</span>}
-                  <p className="font-display text-lg text-foreground mt-1">{b.name}</p>
-                  <p className="text-[11px] tracking-wide-sm uppercase text-muted-foreground mt-2">{b.detail}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
+
+        {/* 9. Información de envío y beneficios */}
+        <div className="mt-6 grid grid-cols-2 gap-3 text-[11px] tracking-wide-sm uppercase text-muted-foreground border hairline p-4">
+          <span>✓ Secure Checkout</span>
+          <span>✓ Easy Returns</span>
+          <span>✓ Selected Materials</span>
+          <span>✓ Track Your Order</span>
+        </div>
+
+        {/* 10. Descripción */}
+        {d.product.plainDescription && (
+          <p className="mt-4 text-[13px] text-foreground leading-relaxed" dangerouslySetInnerHTML={{ __html: d.product.plainDescription }} />
+        )}
+
+        {/* 11. Productos relacionados */}
+        <RelatedProducts product={d.product} />
       </div>
 
-      {/* Related products */}
-      <RelatedProducts product={d.product} />
       <StickyAddToCart
         product={d.product}
         price={d.price}

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
-import { cva } from "class-variance-authority";
+import { cva } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+          "bg-primary text-primary-foreground shadow:hover:bg-primary/90",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
@@ -34,14 +34,23 @@ const buttonVariants = cva(
   }
 )
 
-const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
+/**
+ * @param {Object} props
+ * @param {string} [props.className]
+ * @param {("default"|"destructive"|"outline"|"secondary"|"ghost"|"link")} [props.variant]
+ * @param {("default"|"sm"|"lg"|"icon")} [props.size]
+ * @param {boolean} [props.asChild]
+ * @returns {React.ReactElement}
+ */
+const Button = React.forwardRef(function Button(props, ref) {
+  const { className, variant, size, asChild = false, ...rest } = props
   const Comp = asChild ? Slot : "button"
   return (
-    (<Comp
+    <Comp
       className={cn(buttonVariants({ variant, size, className }))}
       ref={ref}
-      {...props} />)
-  );
+      {...rest} />
+  )
 })
 Button.displayName = "Button"
 

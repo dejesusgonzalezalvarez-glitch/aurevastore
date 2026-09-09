@@ -16,7 +16,37 @@ import {
 const FALLBACK_IMAGE_URL =
   "https://static.wixstatic.com/media/12d367_4f26ccd17f8f4e3a8958306ea08c2332~mv2.png"
 
-const ImageWrapper = React.forwardRef(({ aspectRatio, className, style, children }, ref) => (
+/**
+ * @typedef {Object} ImageWrapperProps}
+ * @property {string} [className]
+ * @property {object} [style]
+ * @property {React.ReactNode} [children]
+ */
+
+/**
+ * @typedef {Object} ResponsiveImageProps}
+ * @property {Object} parsed
+ * @property {string} [fittingType]
+ * @property {*} [focalPoint]
+ * @property {number} [quality]
+ * @property {string} [className]
+ * @property {object} [style]
+ * @property {*} [aspectRatio]
+ * @property {function} [onLoad]
+ * @property {any} [props]
+ */
+
+/**
+ * @param {ImageWrapperProps} props
+ * @param {React.Ref} ref
+ * @returns {React.ReactElement}
+ */
+const ImageWrapper = React.forwardRef(({
+  aspectRatio,
+  className,
+  style,
+  children
+}, ref) => (
   <span
     ref={ref}
     className={cn("inline-block relative", className)}
@@ -27,6 +57,24 @@ const ImageWrapper = React.forwardRef(({ aspectRatio, className, style, children
 ))
 ImageWrapper.displayName = "ImageWrapper"
 
+/**
+ * @typedef {Object} ResponsiveImageInternalProps}
+ * @property {Object} parsed.required
+ * @property {string} [fittingType="fill"]
+ * @property {*} [focalPoint]
+ * @property {number} [quality=90]
+ * @property {string} [className]
+ * @property {object} [style]
+ * @property {*} [aspectRatio]
+ * @property {function} [onLoad]
+ * @property {any} [src]
+ */
+
+/**
+ * @param {ResponsiveImageInternalProps} props
+ * @param {React.Ref} parentRef
+ * @returns {React.ReactElement}
+ */
 const ResponsiveImage = React.forwardRef(
   ({ parsed, fittingType, focalPoint, quality, className, style, aspectRatio, onLoad, ...props }, parentRef) => {
     const wrapperRef = React.useRef(null)
@@ -110,12 +158,22 @@ const ResponsiveImage = React.forwardRef(
 ResponsiveImage.displayName = "ResponsiveImage"
 
 /**
- * Image with built-in Wix Media Platform support: canonical public images on
- * media.db.com and static.wixstatic.com/media are resized to the rendered
- * container per device pixel ratio and re-encoded to WebP; `fittingType="fill"`
- * crops server-side, optionally anchored at a focal point. Other URLs render
- * as a plain <img>. Failed transforms retry the original URL; only a broken
- * original swaps to the generic fallback image.
+ * @typedef {Object} ImageProps}
+ * @property {string} [src]
+ * @property {"fill"} [fittingType]
+ * @property {number} [originWidth]
+ * @property {number} [originHeight]
+ * @property {number} [focalPointX]
+ * @property {number} [focalPointY]
+ * @property {number} [quality=90]
+ * @property {function} [onError]
+ * @property {any} [props]
+ */
+
+/**
+ * @param {ImageProps} props
+ * @param {React.Ref} ref
+ * @returns {React.ReactElement}
  */
 const Image = React.forwardRef(
   (

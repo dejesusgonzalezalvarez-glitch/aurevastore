@@ -14,7 +14,6 @@ const NAV = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
 
@@ -23,86 +22,59 @@ export default function Header() {
   }, [location.pathname]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setOpen(false);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <header className={`sticky top-0 z-40 bg-background/90 backdrop-blur-md transition-shadow ${scrolled ? "shadow-float" : ""}`}>
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
-          <button className="md:hidden p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground" onClick={() => setOpen(true)} aria-label="Open menu">
-            <Menu size={22} strokeWidth={1.5} />
+    <header className={`sticky top-0 z-40 bg-background/90 backdrop-blur-md transition-shadow`}>
+      <div className="mx-auto max-w-7xl px-5">
+        <div className="flex items-center justify-between h-16">
+          <button className="flex items-center justify-center p-1 min-w-[44px] min-h-[44px] text-foreground" onClick={() => setOpen(true)} aria-label="Open menu">
+            <Menu size={24} strokeWidth={1.5} />
           </button>
 
-          <nav className="hidden md:flex items-center gap-8 flex-1">
-            {NAV.slice(0, 2).map((n) => (
-              <Link key={n.label} to={n.to} className="text-[11px] tracking-wide-sm uppercase text-foreground/80 hover:text-foreground transition-colors">
-                {n.label}
-              </Link>
-            ))}
-          </nav>
-
-          <Link to="/" className="font-display text-2xl sm:text-3xl tracking-[0.25em] text-foreground font-medium select-none" aria-label="AUREVA home">
-            AUREVA
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-8 flex-1 justify-end">
-            {NAV.slice(2).map((n) => (
-              <Link key={n.label} to={n.to} className="text-[11px] tracking-wide-sm uppercase text-foreground/80 hover:text-foreground transition-colors">
-                {n.label}
-              </Link>
-            ))}
-            <button onClick={() => setSearchOpen(true)} aria-label="Search" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground/80 hover:text-foreground transition-colors">
-              <Search size={20} strokeWidth={1.5} />
-            </button>
-            <Link to={`/product/${HERO_SLUG}`} className="text-[11px] tracking-wide-sm uppercase bg-foreground text-background px-5 py-2.5 hover:bg-foreground/85 transition-colors">
-              Create Yours
+          <div className="hidden flex-1 items-center justify-center gap-2">
+            <Link to="/" className="font-display text-lg tracking-[0.25em] text-foreground font-medium select-none" aria-label="AUREVA home">
+              AUREVA
             </Link>
-          </nav>
+          </div>
 
-          <div className="md:hidden flex items-center gap-1 flex-1 justify-end">
+          <div className="hidden flex items-center gap-2">
             <button onClick={() => setSearchOpen(true)} aria-label="Search" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground">
               <Search size={22} strokeWidth={1.5} />
             </button>
             <CartButton />
           </div>
         </div>
-        <div className="hidden md:flex items-center justify-end -mt-2 pb-1">
-          <CartButton />
-        </div>
-      </div>
 
-      {open && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-black/30" onClick={() => setOpen(false)} />
-          <div className="absolute top-0 left-0 h-full w-[82%] max-w-sm bg-background shadow-luxe flex flex-col animate-fade-in">
-            <div className="flex items-center justify-between px-5 h-16 border-b hairline">
-              <span className="font-display text-xl tracking-[0.25em]">AUREVA</span>
-              <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 -mr-2 min-w-[44px] min-h-[44px] flex items-center justify-center"><X size={20} strokeWidth={1.5} /></button>
-            </div>
-            <nav className="flex flex-col px-5 py-4 gap-1">
-              {NAV.map((n) => (
-                <Link key={n.label} to={n.to} className="py-3 text-sm tracking-wide-sm uppercase text-foreground/80 border-b hairline">
-                  {n.label}
-                </Link>
-              ))}
-              <Link to={`/product/${HERO_SLUG}`} className="mt-5 text-center text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-4 min-h-[44px] flex items-center justify-center">
-                Create Yours
-              </Link>
-              <Link to="/track-order" className="mt-3 text-center text-[11px] tracking-wide-sm uppercase border hairline py-4 min-h-[44px] flex items-center justify-center text-foreground">
-                Track Order
-              </Link>
-              <Link to="/contact" className="mt-3 text-center text-[11px] tracking-wide-sm uppercase border hairline py-4 min-h-[44px] flex items-center justify-center text-foreground">
-                Contact
-              </Link>
-            </nav>
+        <nav className={`fixed top-0 right-0 inset-y-0 z-50 md:hidden w-80 max-w-sm bg-background shadow-luxe flex flex-col border-l border-border animate-fade-in`}>
+          <div className="flex items-center justify-between px-4 py-3 border-b hairline">
+            <span className="font-display text-xl tracking-[0.25em]">AUREVA</span>
+            <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-1 min-w-[44px] min-h-[44px] flex items-center justify-center"><X size={24} strokeWidth={1.5} /></button>
           </div>
-        </div>
-      )}
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+          <div className="flex flex-col px-4 py-4 gap-2">
+            {NAV.map((n) => (
+              <Link key={n.label} to={n.to} className="py-2.5 text-sm tracking-wide-sm uppercase text-foreground/80 border-b hairline">
+                {n.label}
+              </Link>
+            ))}
+            <Link to={`/product/${HERO_SLUG}`} className="mt-4 text-center text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-3 min-h-[44px] flex items-center justify-center">
+              Create Yours
+            </Link>
+            <Link to="/track-order" className="mt-2 text-center text-[11px] tracking-wide-sm uppercase border hairline py-3 min-h-[44px] flex items-center justify-center text-foreground">
+              Track Order
+            </Link>
+            <Link to="/contact" className="mt-2 text-center text-[11px] tracking-wide-sm uppercase border hairline py-3 min-h-[44px] flex items-center justify-center text-foreground">
+              Contact
+            </Link>
+          </div>
+        </nav>
+
+        <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+      </div>
     </header>
   );
 }

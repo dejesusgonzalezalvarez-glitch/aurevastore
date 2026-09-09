@@ -6,7 +6,7 @@ export default function ProductCard({ product }) {
   const { addToCart, loading } = useCart();
   const {
     isSoldOut, leftBadges, promoBadge, priceDisplay, compareAtDisplay,
-    colors, optionLabel, isQuickAddable, image, hoverImage,
+    colors, optionLabel, isQuickAddable, image,
   } = useProductCard(product);
 
   const quickAdd = (e) => {
@@ -22,16 +22,8 @@ export default function ProductCard({ product }) {
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground/40 text-xs">AUREVA</div>
         )}
-        {hoverImage && (
-          <img src={hoverImage} alt="" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        )}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-          {leftBadges.map((b) => (
-            <span key={b.type} className="text-[10px] tracking-wide-sm uppercase bg-background/95 text-foreground px-2.5 py-1">{b.label}</span>
-          ))}
-        </div>
         {promoBadge && (
-          <span className="absolute top-3 right-3 text-[10px] tracking-wide-sm uppercase bg-foreground text-background px-2.5 py-1">{promoBadge.label}</span>
+          <span className="absolute top-3 left-3 text-[10px] tracking-wide-sm uppercase bg-foreground text-background px-2.5 py-1">{promoBadge.label}</span>
         )}
         {isQuickAddable && !isSoldOut && (
           <button onClick={quickAdd} disabled={loading}
@@ -39,14 +31,8 @@ export default function ProductCard({ product }) {
             Quick Add
           </button>
         )}
-        {isQuickAddable && !isSoldOut && (
-          <button onClick={(e) => { e.stopPropagation(); quickAdd(e); }} disabled={loading} aria-label={`Quick add ${product.name}`}
-            className="sm:hidden absolute bottom-3 right-3 w-11 h-11 rounded-full bg-foreground text-background text-xl leading-none shadow-luxe disabled:opacity-60">
-            +
-          </button>
-        )}
       </div>
-      <div className="pt-4">
+      <div className="pt-3">
         <h3 className="font-display text-lg leading-snug text-foreground">{product.name}</h3>
         {optionLabel && <p className="text-[11px] text-muted-foreground mt-1">{optionLabel}</p>}
         <div className="mt-2 flex items-center gap-2">
@@ -55,8 +41,8 @@ export default function ProductCard({ product }) {
         </div>
         {colors?.length > 0 && (
           <div className="flex gap-1.5 mt-2.5">
-            {colors.slice(0, 5).map((c, i) => (
-              <span key={i} className="w-3 h-3 rounded-full border hairline" style={{ backgroundColor: c }} />
+            {colors.slice(0, 3).map((c, i) => (
+              <span key={i} className="w-2.5 h-2.5 rounded-full border hairline" style={{ backgroundColor: c }} />
             ))}
           </div>
         )}

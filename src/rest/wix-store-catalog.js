@@ -95,7 +95,7 @@ export async function searchProducts({ limit = 100, cursor, categoryId, sort = "
     const min = priceBound(minPrice, "minPrice"), max = priceBound(maxPrice, "maxPrice");
     if (min !== undefined && max !== undefined && min > max) throw new Error("minPrice must not exceed maxPrice.");
     if (typeof search !== "string" || search.trim().length > 100) throw new Error("Search must be at most 100 characters.");
-    const conditions = [{ visible: true }];
+const conditions = [{ visible: true }];
     if (categoryId) conditions.push({ "allCategoriesInfo.categories": { $matchItems: [{ id: categoryId }] } });
     // Search rejects two operators in the same field object. Join separate bounds with $and.
     if (min !== undefined) conditions.push({ "actualPriceRange.minValue.amount": { $gte: String(min) } });

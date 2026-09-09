@@ -149,3 +149,13 @@
     transition-duration: 0.2s !important;
   }
 }
+
+/* Mobile-first responsive utilities */
+@layer utilities {
+  .motion-safe {
+    @media (prefers-reduced-motion: reduce) {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
