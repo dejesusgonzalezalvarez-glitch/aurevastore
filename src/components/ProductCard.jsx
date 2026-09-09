@@ -31,6 +31,11 @@ export default function ProductCard({ product }) {
             Quick Add
           </button>
         )}
+        {product.metafields?.aureva?.bundles && product.metafields.aureva.bundles.enabled && (
+          <span className="absolute top-3 right-3 text-[8px] tracking-wide-sm uppercase bg-foreground/20 text-foreground/60 px-2 py-1 rounded-badge">
+            Bundle disponible
+          </span>
+        )}
       </div>
       <div className="pt-3">
         <h3 className="font-display text-lg leading-snug text-foreground">{product.name}</h3>

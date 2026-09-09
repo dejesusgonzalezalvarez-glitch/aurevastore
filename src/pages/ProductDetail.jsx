@@ -4,6 +4,7 @@ import { useProductDetail } from "@/hooks/useProductDetail";
 import { useVariantOptions } from "@/hooks/useVariantOptions";
 import { productGallery, productImage } from "@/lib/storeImage";
 import { useCart } from "@/context/CartContext";
+import { useBundlePricing, BundleOptions } from "@/components/BundleOptions";
 import { Seo, productSchema, breadcrumbSchema, currencyCode, truncate } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedProducts from "@/components/RelatedProducts";
@@ -21,6 +22,8 @@ export default function ProductDetail() {
   const { optionGroups, modifierGroups } = useVariantOptions(d.options, d.modifiers, d.selectedOptions, d.modifierValues);
   const { checkout, loading: cartLoading } = useCart();
   const [activeImg, setActiveImg] = useState(0);
+  const [selectedBundleIndex, setSelectedBundleIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   if (d.error) return (
     <div className="mx-auto max-w-2xl px-5 py-32 text-center">
@@ -55,11 +58,31 @@ export default function ProductDetail() {
   const seoPrice = d.variant?.price?.actualPrice?.amount ?? d.product?.actualPriceRange?.minValue?.amount ?? "";
   const seoCurrency = d.variant?.price?.actualPrice?.currency || d.product?.currency || currencyCode(d.price);
 
+  const { bundleOptions, unitPrice } = useBundlePricing(d.product);
+
   async function buyNow() {
     if (!d.product || !d.canAdd || d.adding || cartLoading) return;
     const result = await d.submit();
     if (result === null) return;
     await checkout();
+  }
+
+  async function addBundleToCart(bundleIndex) {
+    const selected = bundleOptions[bundleIndex];
+    const qty = selected.quantity;
+    if (!d.product || !d.canAdd) return;
+
+    setSelectedBundleIndex(bundleIndex);
+    setQuantity(qty);
+
+    try {
+      await d.addToCart(d.product.id, d.variant?.id, qty, {
+        modifierChoices: Object.keys(d.modifierChoices || {}).length ? d.modifierChoices : undefined,
+        customTextFields: Object.keys(d.customTextFields || {}).length ? d.customTextFields : undefined,
+      });
+    } catch (e) {
+      console.error("Error adding bundle to cart:", e);
+    }
   }
 
   return (
@@ -191,16 +214,35 @@ export default function ProductDetail() {
                     {c.name}
                   </button>
                 ))}
-              </div>
-            )}
-          </div>
-        ))}
+</div>
+
+{/* 3.5. Opciones de Bundle */}
+        {bundleOptions && bundleOptions.length > 0 && (
+          <BundleOptions
+            product={d.product}
+            onSelect={index => setSelectedBundleIndex(index)}
+            selectedIndex={selectedBundleIndex}
+          />
+        )}
+
+        {/* 4. Valoración, si existen datos reales */}
+        {d.product.plainDescription && (
+          <p className="mt-2 text-[15px] text-foreground font-light italic">
+            A piece made for the people, moments and memories you never want to forget.
+          </p>
+        )}
 
         {/* 8. CTA "AÑADIR AL CARRITO" */}
         <div className="mt-6">
           <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={() => d.submit()}
+              onClick={() => {
+                if (bundleOptions && bundleOptions.length > 0) {
+                  addBundleToCart(selectedBundleIndex);
+                } else {
+                  d.submit();
+                }
+              }}
               disabled={!d.canAdd || d.adding}
               className="flex-1 text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-3 px-4 hover:bg-foreground/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
