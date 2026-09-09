@@ -1,4 +1,4 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
+const db = { auth: { isAuthenticated: async ()=>false, me: async ()=>null, resetPassword: async ()=>{ throw new Error("Base44 auth not configured") } } };
 
 import React, { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -30,7 +30,7 @@ export default function ResetPassword() {
       await db.auth.resetPassword({ resetToken, newPassword });
       window.location.href = "/login";
     } catch (err) {
-      setError(err.message || "Failed to reset password");
+      setError("Authentication service is not configured. Please contact support.");
     } finally {
       setLoading(false);
     }

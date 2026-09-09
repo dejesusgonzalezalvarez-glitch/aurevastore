@@ -1,4 +1,4 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
+const db = { auth: { isAuthenticated: async ()=>false, me: async ()=>null, register: async ()=>{ throw new Error("Base44 auth not configured") }, verifyOtp: async ()=>{ throw new Error("Base44 auth not configured") }, setToken: async ()=>{}, resendOtp: async ()=>{ throw new Error("Base44 auth not configured") }, loginWithProvider: async ()=>{ throw new Error("Base44 auth not configured") } } };
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ export default function Register() {
       await db.auth.register({ email, password });
       setShowOtp(true);
     } catch (err) {
-      setError(err.message || "Registration failed");
+      setError("Authentication service is not configured. Please contact support.");
     } finally {
       setLoading(false);
     }
@@ -44,13 +44,10 @@ export default function Register() {
     setError("");
     setLoading(true);
     try {
-      const result = await db.auth.verifyOtp({ email, otpCode });
-      if (result?.access_token) {
-        db.auth.setToken(result.access_token);
-      }
+      // Base44 auth not configured - redirect to home
       window.location.href = safeReturnTo();
     } catch (err) {
-      setError(err.message || "Invalid verification code");
+      setError("Authentication service is not configured. Please contact support.");
     } finally {
       setLoading(false);
     }
@@ -59,18 +56,17 @@ export default function Register() {
   const handleResend = async () => {
     setError("");
     try {
-      await db.auth.resendOtp(email);
       toast({
-        title: "Code sent",
-        description: "Check your email for the new code.",
+        title: "Auth not configured",
+        description: "Authentication service is not configured.",
       });
     } catch (err) {
-      setError(err.message || "Failed to resend code");
+      setError("Authentication service is not configured. Please contact support.");
     }
   };
 
   const handleGoogle = () => {
-    db.auth.loginWithProvider("google", safeReturnTo());
+    throw new Error("Authentication service is not configured. Please contact support.");
   };
 
   if (showOtp) {

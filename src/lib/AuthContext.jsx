@@ -1,4 +1,4 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
+const db = { auth: { isAuthenticated: async ()=>false, me: async ()=>null }, entities: new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }) };
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
@@ -24,20 +24,20 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
       
-      try {
-        const publicSettings = await db.app.getPublicSettings();
-        setAppPublicSettings(publicSettings);
-        
-        // If we got the app public settings successfully, check if user is authenticated
-        if (appParams.token) {
-          await checkUserAuth();
-        } else {
-          setIsLoadingAuth(false);
-          setIsAuthenticated(false);
-          setAuthChecked(true);
-        }
-        setIsLoadingPublicSettings(false);
-      } catch (appError) {
+      // Use stubbed Base44 SDK methods since Base44 is not configured
+      const publicSettings = await (db?.app?.getPublicSettings?.() || Promise.resolve(null));
+      setAppPublicSettings(publicSettings);
+      
+      // If we got the app public settings successfully, check if user is authenticated
+      if (appParams.token) {
+        await checkUserAuth();
+      } else {
+        setIsLoadingAuth(false);
+        setIsAuthenticated(false);
+        setAuthChecked(true);
+      }
+      setIsLoadingPublicSettings(false);
+    } catch (appError) {
         console.error('App state check failed:', appError);
         
         // Handle app-level errors
@@ -83,9 +83,9 @@ export const AuthProvider = ({ children }) => {
     try {
       // Now check if the user is authenticated
       setIsLoadingAuth(true);
-      const currentUser = await db.auth.me();
+      const currentUser = await (db?.auth?.me?.() || Promise.resolve(null));
       setUser(currentUser);
-      setIsAuthenticated(true);
+      setIsAuthenticated(!!(currentUser || appParams.token));
       setIsLoadingAuth(false);
       setAuthChecked(true);
     } catch (error) {
@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }) => {
       setAuthChecked(true);
       
       // If user auth fails, it might be an expired token
-      if (error.status === 401 || error.status === 403) {
+      if ((error.status || error)?.status === 401 || (error.status || error)?.status === 403) {
         setAuthError({
           type: 'auth_required',
           message: 'Authentication required'
@@ -108,18 +108,19 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     
-    if (shouldRedirect) {
-      // Use the SDK's logout method which handles token cleanup and redirect
-      db.auth.logout(window.location.href);
-    } else {
-      // Just remove the token without redirect
-      db.auth.logout();
+    // Clean up stored token if applicable
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.removeItem('token');
+      } catch {
+        /* ignore */
+      }
     }
   };
 
   const navigateToLogin = () => {
-    // Use the SDK's redirectToLogin method
-    db.auth.redirectToLogin(window.location.href);
+    // Redirect to login page since Base44 auth is not configured
+    window.location.href = '/login';
   };
 
   return (
