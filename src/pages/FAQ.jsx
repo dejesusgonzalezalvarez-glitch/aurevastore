@@ -5,9 +5,9 @@ const SECTIONS = [
   {
     title: "Your Jewelry",
     items: [
-      { q: "How does Build Your Story work?", a: "Choose your chain, then add the charms that represent the people, moments and memories that matter to you. Each piece is assembled into one personal necklace." },
-      { q: "How many charms can I add?", a: "You can start with one charm and add as many as you like. More charms create a fuller, more personal story." },
-      { q: "Can I add more charms later?", a: "Yes. You can always come back and add new charms to your necklace as your story grows." },
+      { q: "How does Build Your Story work?", a: "Every piece is designed around a meaning — a heart, a star, an initial — and on select pieces you can choose the finish and chain style that fit you." },
+      { q: "Can I choose the finish or chain style?", a: "Yes, wherever it's offered on the product page — Silver or Gold finish, and a choice of chain styles." },
+      { q: "Can I build a fuller collection over time?", a: "Yes. Many customers layer several pieces together, and buying more than one unlocks bundle savings — see any product page for current bundle pricing." },
       { q: "What materials are used?", a: "We carefully select our materials. Specific details are confirmed with our supplier and available on each product page." },
       { q: "Is it suitable for everyday wear?", a: "Yes. AUREVA pieces are designed to be worn, layered and loved every day." },
     ],
