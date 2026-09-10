@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export const SITE_NAME = "AUREVA";
 export const SITE_TAGLINE = "Wear Your Story";
 export const SITE_DESCRIPTION =
-  "AUREVA creates personalized jewelry that tells your story. Build your own charm necklace with the people, memories and moments that matter most.";
+  "AUREVA creates personalized jewelry that tells your story — necklaces and charms designed around the people, memories and moments that matter most.";
 export const DEFAULT_OG_IMAGE =
   "https://static.wixstatic.com/media/204143_37e83218c95247d1beea1420347d352d~mv2.jpg";
 

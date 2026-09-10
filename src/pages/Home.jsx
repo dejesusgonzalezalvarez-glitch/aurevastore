@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <Seo
         title="AUREVA — Personalized Jewelry That Tells Your Story"
-        description="Personalized jewelry made to be worn, layered and loved. Design a charm necklace that represents the people, memories and moments that matter most."
+        description="Personalized jewelry made to be worn, layered and loved — necklaces and charms designed around the people, memories and moments that matter most."
         canonicalPath="/"
       />
       <AnnouncementBar config={{ text: "SAVE UP TO 40% WHEN YOU BUNDLE", buttonText: "SHOP BUNDLES", buttonLink: "/shop" }} />

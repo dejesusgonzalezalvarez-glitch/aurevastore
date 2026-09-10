@@ -16,7 +16,7 @@ export default function Hero() {
             Personalized jewelry that<br /><span className="italic">tells your story.</span>
           </h1>
           <p className="mt-6 text-base lg:text-lg text-muted-foreground leading-relaxed max-w-md">
-            Create a necklace that represents the people, memories and moments that matter most to you.
+            Necklaces and charms designed around the people, memories and moments that matter most to you.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <Link to={`/product/${HERO_SLUG}`} className="flex-1 text-center text-[11px] tracking-wide-sm uppercase bg-foreground text-background py-4 px-6 hover:bg-foreground/85 transition-colors">

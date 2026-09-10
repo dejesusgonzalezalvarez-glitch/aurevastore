@@ -18,7 +18,7 @@ export default function WinnerProduct() {
             One necklace.<br />A thousand meanings.
           </h2>
           <p className="mt-6 text-muted-foreground leading-relaxed">
-            Choose the details that represent your life and create something that is uniquely yours.
+            Choose your finish and chain, then wear a piece made to carry what matters to you.
           </p>
         </div>
 

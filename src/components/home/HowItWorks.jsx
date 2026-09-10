@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 
-const HERO_SLUG = "build-your-story-charm-necklace";
-
 const STEPS = [
-  { n: "01", title: "Choose your chain.", text: "Select the style that most represents you." },
-  { n: "02", title: "Choose what matters.", text: "Add initials, symbols or charms." },
-  { n: "03", title: "Wear your story.", text: "Create a completely personal piece." },
+  { n: "01", title: "Choose your piece.", text: "Every design is built around a meaning — a heart, a star, an initial." },
+  { n: "02", title: "Choose your finish.", text: "Silver or gold, wherever it's offered." },
+  { n: "03", title: "Wear your story.", text: "Layer it with the pieces that matter most to you." },
 ];
 
 export default function HowItWorks() {
@@ -25,8 +23,8 @@ export default function HowItWorks() {
           ))}
         </div>
         <div className="text-center mt-16">
-          <Link to={`/product/${HERO_SLUG}`} className="inline-block text-[11px] tracking-wide-sm uppercase border hairline text-foreground px-10 py-4 hover:bg-background transition-colors">
-            Start Creating
+          <Link to="/shop" className="inline-block text-[11px] tracking-wide-sm uppercase border hairline text-foreground px-10 py-4 hover:bg-background transition-colors">
+            Shop the Collection
           </Link>
         </div>
       </div>

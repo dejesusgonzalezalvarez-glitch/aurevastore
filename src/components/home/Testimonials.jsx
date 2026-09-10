@@ -1,5 +1,5 @@
 const REVIEWS = [
-  { text: "I chose charms that represent my family. I wear it every day.", author: "Maya R." },
+  { text: "It feels like it was made to carry the people I love. I wear it every day.", author: "Maya R." },
   { text: "It was the most meaningful gift I've ever given.", author: "Elena S." },
   { text: "Beautiful, personal and unlike anything else in my jewelry collection.", author: "Sofia L." },
 ];
