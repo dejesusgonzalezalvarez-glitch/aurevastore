@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useSearchParams } from "react-router-dom";
 import { useProductDetail } from "@/hooks/useProductDetail";
 import { useVariantOptions } from "@/hooks/useVariantOptions";
 import { productGallery, productImage } from "@/lib/storeImage";
@@ -10,19 +10,19 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedProducts from "@/components/RelatedProducts";
 import StickyAddToCart from "@/components/StickyAddToCart";
 
-const BUNDLES = [
-  { name: "Start Your Story", detail: "1 Charm", featured: false },
-  { name: "Build Your Story", detail: "3 Charms", featured: true },
-  { name: "The Full Story", detail: "5 Charms", featured: false },
-];
-
 export default function ProductDetail() {
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
   const d = useProductDetail(slug);
   const { optionGroups, modifierGroups } = useVariantOptions(d.options, d.modifiers, d.selectedOptions, d.modifierValues);
   const { checkout, loading: cartLoading } = useCart();
   const [activeImg, setActiveImg] = useState(0);
-  const [selectedBundleIndex, setSelectedBundleIndex] = useState(0);
+  // Honors ?bundle=<0-3> from the homepage bundle cards (see components/home/Bundles.jsx) so
+  // "Buy 3, Save 30%" actually lands with that tier selected instead of resetting to 1 unit.
+  const [selectedBundleIndex, setSelectedBundleIndex] = useState(() => {
+    const fromUrl = Number(searchParams.get("bundle"));
+    return Number.isInteger(fromUrl) && fromUrl >= 0 && fromUrl <= 3 ? fromUrl : 0;
+  });
   const [quantity, setQuantity] = useState(1);
   const { bundleOptions, unitPrice } = useBundlePricing(d.product);
 

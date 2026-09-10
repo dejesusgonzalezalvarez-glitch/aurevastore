@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 function calculateBundlePrice(unitPrice, quantity, discountPercent) {
   const baseTotal = unitPrice * quantity;
@@ -54,17 +54,14 @@ export function useBundlePricing(product) {
   return { bundleOptions, unitPrice: formatMoney(unitPrice, currency) };
 }
 
-export function BundleOptions({ product, onSelect }) {
+// Controlled: selectedIndex/onSelect are owned by the parent (ProductDetail keeps it in
+// state so "Add to cart" and a deep link from the homepage bundle cards agree on the tier).
+export function BundleOptions({ product, selectedIndex = 0, onSelect }) {
   const { bundleOptions, unitPrice } = useBundlePricing(product);
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const handleSelect = (index) => {
-    setSelectedIndex(index);
-    onSelect?.(index);
-  };
+  const handleSelect = (index) => onSelect?.(index);
 
-  const selected = bundleOptions[selectedIndex];
-  const discountPercent = selected.discount;
+  const selected = bundleOptions[selectedIndex] || bundleOptions[0];
 
   return useMemo(() => (
     <div className="bundle-options mt-6">
