@@ -50,8 +50,8 @@ export default function Hero() {
             "Carefully Selected Materials",
             "Track Your Order",
           ].map((t) => (
-            <div key={t} className="flex items-center justify-center gap-2 py-3 text-[11px] tracking-wide-sm uppercase text-muted-foreground text-center">
-              <span className="text-foreground">✓</span> {t}
+            <div key={t} className="flex items-center justify-center py-3 px-2 text-[11px] tracking-wide-sm uppercase text-muted-foreground text-center">
+              <span><span className="text-foreground">✓</span> {t}</span>
             </div>
           ))}
         </div>
