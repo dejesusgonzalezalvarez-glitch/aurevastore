@@ -20,11 +20,18 @@ function getDiscountForQuantity(quantity) {
   return 0;
 }
 
+// Fixed to en-US — this storefront is English-only, so prices should read "$89.00"
+// regardless of the shopper's browser locale.
+function formatMoney(amount, currency) {
+  return new Intl.NumberFormat("en-US", { style: "currency", currency: currency || "USD" }).format(amount);
+}
+
 export function useBundlePricing(product) {
   const variant = product?.variantsInfo?.variants?.[0] || null;
   const unitPrice = Number(
     variant?.price?.actualPrice?.amount ?? product?.actualPriceRange?.minValue?.amount ?? 0
   );
+  const currency = variant?.price?.actualPrice?.currency || product?.currency || "USD";
 
   const bundleOptions = useMemo(() => {
     const options = [];
@@ -34,17 +41,17 @@ export function useBundlePricing(product) {
       options.push({
         quantity: i,
         discount,
-        baseTotal: baseTotal.toFixed(2),
-        discountAmount: discountAmount.toFixed(2),
-        finalTotal: finalTotal.toFixed(2),
-        label: `${i} ${i === 1 ? "UNIDAD" : "UNIDADES"}`,
-        description: discount > 0 ? `AHORRA ${discount}%` : "Precio normal",
+        baseTotal: formatMoney(baseTotal, currency),
+        discountAmount: formatMoney(discountAmount, currency),
+        finalTotal: formatMoney(finalTotal, currency),
+        label: `${i} ${i === 1 ? "UNIT" : "UNITS"}`,
+        description: discount > 0 ? `SAVE ${discount}%` : "Regular price",
       });
     }
     return options;
-  }, [unitPrice]);
+  }, [unitPrice, currency]);
 
-  return { bundleOptions, unitPrice: unitPrice.toFixed(2) };
+  return { bundleOptions, unitPrice: formatMoney(unitPrice, currency) };
 }
 
 export function BundleOptions({ product, onSelect }) {
@@ -66,7 +73,7 @@ export function BundleOptions({ product, onSelect }) {
           <button
             key={option.quantity}
             onClick={() => handleSelect(i)}
-            className={`flex-1 rounded-lg border transition-all duration-200 ${
+            className={`flex-1 flex flex-col items-start gap-0.5 rounded-lg border p-3 transition-all duration-200 ${
               i === selectedIndex
                 ? "border-foreground bg-foreground/10 text-foreground"
                 : "border-hairline text-muted-foreground hover:bg-secondary/50"
@@ -79,22 +86,26 @@ export function BundleOptions({ product, onSelect }) {
           >
             <span className="text-foreground">{option.label}</span>
             <span className="text-[10px] tracking-wide-sm opacity-60">{option.description}</span>
-            <span className="ml-auto text-foreground/60">{option.finalTotal} €</span>
-            <span className="text-[10px] tracking-wider opacity-40 line-through">{option.baseTotal} €</span>
+            <span className="mt-1 flex items-baseline gap-2">
+              <span className="text-foreground/80">{option.finalTotal}</span>
+              {option.discount > 0 && (
+                <span className="text-[10px] tracking-wider opacity-40 line-through">{option.baseTotal}</span>
+              )}
+            </span>
           </button>
         ))}
       </div>
 
       {selected.discount > 0 && (
         <p className="mt-3 text-[10px] tracking-wide-sm uppercase text-foreground/80">
-          AHORRAS {selected.discount}% {selected.quantity === 1 ? "" : "en este bundle"}
+          You save {selected.discount}% {selected.quantity === 1 ? "" : "on this bundle"}
         </p>
       )}
 
       {selected.discount > 0 && (
         <p className="mt-2 text-xs text-muted-foreground">
-          Base: {selected.baseTotal} € → Con descuento: {selected.finalTotal} €
-          ({selected.discountAmount} € de ahorro)
+          Regular price: {selected.baseTotal} → Bundle price: {selected.finalTotal}
+          {" "}({selected.discountAmount} saved)
         </p>
       )}
     </div>

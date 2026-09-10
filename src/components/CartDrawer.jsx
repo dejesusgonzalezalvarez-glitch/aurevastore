@@ -20,10 +20,12 @@ import { storeImage } from "@/lib/storeImage";
 
 // Cart V2 money is a ConvertedMoney { amount, convertedAmount } with NO formatted string — format it
 // with the cart's currency (buyer's display currency when present, else the site currency).
+// Locale fixed to en-US — this storefront is English-only, so totals read "$89.00" regardless
+// of the shopper's browser locale.
 function formatCartMoney(money, cart) {
   const value = money?.convertedAmount ?? money?.amount;
   const currency = cart?.customerInfo?.currencyCode ?? cart?.businessInfo?.currencyCode ?? "USD";
-  return value == null ? "" : new Intl.NumberFormat(undefined, { style: "currency", currency }).format(Number(value));
+  return value == null ? "" : new Intl.NumberFormat("en-US", { style: "currency", currency }).format(Number(value));
 }
 
 export default function CartDrawer() {
