@@ -2,6 +2,8 @@ import { useEffect } from "react";
 
 export const SITE_NAME = "AUREVA";
 export const SITE_TAGLINE = "Wear Your Story";
+// PLACEHOLDER — confirm the real support inbox before launch (see src/pages/Contact.jsx).
+export const SUPPORT_EMAIL = "hello@aureva.com";
 export const SITE_DESCRIPTION =
   "AUREVA creates personalized jewelry that tells your story — necklaces and charms designed around the people, memories and moments that matter most.";
 export const DEFAULT_OG_IMAGE =

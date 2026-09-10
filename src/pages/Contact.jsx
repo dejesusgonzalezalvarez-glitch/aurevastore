@@ -1,13 +1,32 @@
 import { useState } from "react";
-import { Seo } from "@/lib/seo";
+import { Seo, SUPPORT_EMAIL } from "@/lib/seo";
 
 const CATEGORIES = ["Order Question", "Shipping", "Returns", "Product Question", "Other"];
+
+function buildMailto(form) {
+  const subject = `[AUREVA] ${form.category}${form.order ? ` — Order ${form.order}` : ""}`;
+  const bodyLines = [
+    form.message,
+    "",
+    `Name: ${form.name}`,
+    `Email: ${form.email}`,
+    form.order ? `Order number: ${form.order}` : null,
+  ].filter(Boolean);
+  const params = new URLSearchParams({ subject, body: bodyLines.join("\n") });
+  return `mailto:${SUPPORT_EMAIL}?${params.toString()}`;
+}
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", order: "", category: CATEGORIES[0], message: "" });
 
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const submit = (e) => {
+    e.preventDefault();
+    window.location.href = buildMailto(form);
+    setSent(true);
+  };
 
   return (
     <div className="mx-auto max-w-2xl px-5 sm:px-8 py-20 sm:py-28">
@@ -24,11 +43,17 @@ export default function Contact() {
 
       {sent ? (
         <div className="text-center py-16 border hairline">
-          <p className="font-display text-3xl font-light text-foreground">Thank you.</p>
-          <p className="mt-4 text-muted-foreground">Your message has been received. We'll be in touch soon.</p>
+          <p className="font-display text-3xl font-light text-foreground">Almost done.</p>
+          <p className="mt-4 text-muted-foreground">
+            Your email app should have opened with your message ready to send — just hit send there.
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Nothing open? Email us directly at{" "}
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="text-foreground underline">{SUPPORT_EMAIL}</a>.
+          </p>
         </div>
       ) : (
-        <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="space-y-6">
+        <form onSubmit={submit} className="space-y-6">
           <Field label="Name"><input required value={form.name} onChange={update("name")} className="contact-input" /></Field>
           <Field label="Email"><input type="email" required value={form.email} onChange={update("email")} className="contact-input" /></Field>
           <Field label="Order Number"><input value={form.order} onChange={update("order")} className="contact-input" /></Field>
