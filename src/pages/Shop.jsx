@@ -119,7 +119,7 @@ export default function Shop() {
       )}
       {s.products?.length > 0 && (
         <p className="text-center text-[10px] tracking-wide-sm uppercase text-muted-foreground mt-4">
-          {s.products.some((p) => p.metafields?.aureva?.bundles) ? "Todos los productos tienen bundles disponibles" : ""}
+          {s.products.some((p) => p.metafields?.aureva?.bundles) ? "Bundle pricing available on select pieces" : ""}
         </p>
       )}
     </div>

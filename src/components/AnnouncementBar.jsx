@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const defaultConfig = {
   showBar: true,
-  text: "AHORRA HASTA 40% AL COMPRAR EN BUNDLE",
-  buttonText: "VER BUNDLES",
+  text: "SAVE UP TO 40% WHEN YOU BUNDLE",
+  buttonText: "SHOP BUNDLES",
   buttonLink: "/shop",
   backgroundColor: "rgba(255, 255, 255, 0.1)",
   textColor: "#FFFFFF",
@@ -13,9 +14,10 @@ const defaultConfig = {
 
 export function AnnouncementBar({ config = defaultConfig }) {
   const [show, setShow] = useState(config.showBar);
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    window.location.href = config.buttonLink;
+    navigate(config.buttonLink);
   };
 
   if (!show) return null;

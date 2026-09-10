@@ -5,7 +5,7 @@ export const SITE_TAGLINE = "Wear Your Story";
 export const SITE_DESCRIPTION =
   "AUREVA creates personalized jewelry that tells your story. Build your own charm necklace with the people, memories and moments that matter most.";
 export const DEFAULT_OG_IMAGE =
-  "https://media.db.com/images/public/6aa02f3f8ca31c6d03cd120c/fce66525f_generated_4bfa8196.jpg";
+  "https://static.wixstatic.com/media/204143_37e83218c95247d1beea1420347d352d~mv2.jpg";
 
 // Resolve a route path (or already-absolute URL) to an absolute URL against the
 // current origin. Keeps canonical/og:url/schema values correct without hardcoding a domain.
@@ -122,11 +122,20 @@ export function faqSchema(questions) {
 function upsertHead(tag, attrs, id, textContent) {
   if (typeof document === "undefined") return;
   let el = document.head.querySelector(`[data-seo="${id}"]`);
+  if (!el && attrs) {
+    // Adopt the matching static tag already in index.html (og:title, og:image, meta
+    // description, …) instead of appending a duplicate — a page with two og:image
+    // tags lets a crawler pick the wrong (static default) one over the real product image.
+    const [firstKey, firstValue] = Object.entries(attrs)[0] || [];
+    if (firstKey === "name" || firstKey === "property" || firstKey === "rel") {
+      el = document.head.querySelector(`${tag}[${firstKey}="${firstValue}"]`);
+    }
+  }
   if (!el) {
     el = document.createElement(tag);
-    el.setAttribute("data-seo", id);
     document.head.appendChild(el);
   }
+  el.setAttribute("data-seo", id);
   if (attrs) {
     for (const [k, v] of Object.entries(attrs)) {
       if (v == null || v === false) el.removeAttribute(k);

@@ -1,7 +1,4 @@
-const db = { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }) };
-
 const WIX_MEDIA_HOSTS = {
-  "media.db.com": "/images/public/",
   "static.wixstatic.com": "/media/",
 }
 

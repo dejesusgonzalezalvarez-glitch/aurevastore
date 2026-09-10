@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { Image } from "@/components/ui/image";
+import { useProductImage } from "@/hooks/useProductImage";
 
 const HERO_SLUG = "build-your-story-charm-necklace";
-const NECKLACE_IMG = "https://media.db.com/images/public/6aa02f3f8ca31c6d03cd120c/2cb5e78d0_generated_109c9ce7.jpg";
-const CHARMS_IMG = "https://media.db.com/images/public/6aa02f3f8ca31c6d03cd120c/b64ca5191_generated_088ff942.jpg";
+const CHARMS_SLUG = "charm-trio-set";
 
 export default function WinnerProduct() {
+  const chain = useProductImage(HERO_SLUG);
+  const charms = useProductImage(CHARMS_SLUG);
+
   return (
     <section className="py-20 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -21,13 +24,21 @@ export default function WinnerProduct() {
 
         <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
           <div className="group relative aspect-[4/5] bg-secondary overflow-hidden">
-            <Image src={NECKLACE_IMG} alt="Build Your Story charm necklace" fittingType="fill" className="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]" />
+            {chain.image ? (
+              <Image src={chain.image} alt={chain.product?.name || "AUREVA chain necklace"} fittingType="fill" className="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]" />
+            ) : (
+              <div className="w-full h-full animate-pulse bg-secondary" />
+            )}
             <div className="absolute inset-0 flex items-end justify-center pb-8">
               <span className="text-background text-[11px] tracking-wide-sm uppercase bg-foreground/85 px-5 py-2.5">The Chain</span>
             </div>
           </div>
           <div className="group relative aspect-[4/5] bg-secondary overflow-hidden">
-            <Image src={CHARMS_IMG} alt="Collection of AUREVA charms" fittingType="fill" className="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]" />
+            {charms.image ? (
+              <Image src={charms.image} alt={charms.product?.name || "Collection of AUREVA charms"} fittingType="fill" className="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]" />
+            ) : (
+              <div className="w-full h-full animate-pulse bg-secondary" />
+            )}
             <div className="absolute inset-0 flex items-end justify-center pb-8">
               <span className="text-background text-[11px] tracking-wide-sm uppercase bg-foreground/85 px-5 py-2.5">The Charms</span>
             </div>

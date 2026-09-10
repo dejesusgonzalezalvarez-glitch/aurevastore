@@ -1,8 +1,7 @@
-const db = { auth:{ isAuthenticated: async ()=>false, me: async ()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }) };
-
 import { Image } from "@/components/ui/image";
+import { useProductImage } from "@/hooks/useProductImage";
 
-const REFLECT_IMG = "https://media.db.com/images/public/6aa02f3f8ca31c6d03cd120c/fdd8ddaaf_generated_ef0cabd0.jpg";
+const STORY_SLUG = "the-story-bracelet";
 
 const CONCEPTS = [
   { sym: "♥", label: "Someone you love." },
@@ -13,13 +12,19 @@ const CONCEPTS = [
 ];
 
 export default function Storytelling() {
+  const story = useProductImage(STORY_SLUG);
+
   return (
     <section className="py-20 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1">
             <div className="aspect-[4/5] bg-secondary overflow-hidden">
-              <Image src={REFLECT_IMG} alt="A woman reflecting while wearing her AUREVA necklace" fittingType="fill" className="w-full h-full" />
+              {story.image ? (
+                <Image src={story.image} alt={story.product?.name || "AUREVA personalized jewelry"} fittingType="fill" className="w-full h-full" />
+              ) : (
+                <div className="w-full h-full animate-pulse bg-secondary" />
+              )}
             </div>
           </div>
           <div className="order-1 lg:order-2">
