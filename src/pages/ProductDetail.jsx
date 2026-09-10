@@ -24,6 +24,7 @@ export default function ProductDetail() {
   const [activeImg, setActiveImg] = useState(0);
   const [selectedBundleIndex, setSelectedBundleIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const { bundleOptions, unitPrice } = useBundlePricing(d.product);
 
   if (d.error) return (
     <div className="mx-auto max-w-2xl px-5 py-32 text-center">
@@ -57,8 +58,6 @@ export default function ProductDetail() {
     "A personalized piece by AUREVA made to represent the people, memories and moments that matter most.";
   const seoPrice = d.variant?.price?.actualPrice?.amount ?? d.product?.actualPriceRange?.minValue?.amount ?? "";
   const seoCurrency = d.variant?.price?.actualPrice?.currency || d.product?.currency || currencyCode(d.price);
-
-  const { bundleOptions, unitPrice } = useBundlePricing(d.product);
 
   async function buyNow() {
     if (!d.product || !d.canAdd || d.adding || cartLoading) return;
@@ -214,22 +213,18 @@ export default function ProductDetail() {
                     {c.name}
                   </button>
                 ))}
-</div>
+              </div>
+            )}
+          </div>
+        ))}
 
-{/* 3.5. Opciones de Bundle */}
+        {/* 7.5. Opciones de Bundle */}
         {bundleOptions && bundleOptions.length > 0 && (
           <BundleOptions
             product={d.product}
             onSelect={index => setSelectedBundleIndex(index)}
             selectedIndex={selectedBundleIndex}
           />
-        )}
-
-        {/* 4. Valoración, si existen datos reales */}
-        {d.product.plainDescription && (
-          <p className="mt-2 text-[15px] text-foreground font-light italic">
-            A piece made for the people, moments and memories you never want to forget.
-          </p>
         )}
 
         {/* 8. CTA "AÑADIR AL CARRITO" */}

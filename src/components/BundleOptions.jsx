@@ -22,9 +22,9 @@ function getDiscountForQuantity(quantity) {
 
 export function useBundlePricing(product) {
   const variant = product?.variantsInfo?.variants?.[0] || null;
-  const unitPrice = variant?.price?.actualPrice?.amount 
-    || product?.actualPriceRange?.minValue?.amount 
-    || 0;
+  const unitPrice = Number(
+    variant?.price?.actualPrice?.amount ?? product?.actualPriceRange?.minValue?.amount ?? 0
+  );
 
   const bundleOptions = useMemo(() => {
     const options = [];
