@@ -85,6 +85,7 @@ export function useProductCard(product) {
       colors,           // hex strings — render as dots; the tile shows up to however many you want
       optionLabel,      // "3 sizes · 2 materials" or empty string
       isQuickAddable,
+      hasOptions,       // true when the product has real variants (needs a variantId to add)
       image,            // primary image URL | null
       hoverImage,       // second image URL for hover effect | null
     };

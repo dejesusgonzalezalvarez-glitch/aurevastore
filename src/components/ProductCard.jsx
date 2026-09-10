@@ -1,18 +1,40 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useProductCard } from "@/hooks/useProductCard";
 import { useCart } from "@/context/CartContext";
+import { getProductBySlug } from "@/rest/wix-store-catalog";
 
 export default function ProductCard({ product }) {
   const { addToCart, loading } = useCart();
+  const [resolving, setResolving] = useState(false);
   const {
     isSoldOut, leftBadges, promoBadge, priceDisplay, compareAtDisplay,
-    colors, optionLabel, isQuickAddable, image,
+    colors, optionLabel, isQuickAddable, hasOptions, image,
   } = useProductCard(product);
 
-  const quickAdd = (e) => {
+  const busy = loading || resolving;
+
+  const quickAdd = async (e) => {
     e.preventDefault();
-    if (isQuickAddable && !loading) addToCart(product.id);
+    if (busy || isSoldOut) return;
+    if (isQuickAddable) {
+      addToCart(product.id);
+      return;
+    }
+    // Has real variants (finish, chain, …) — the search result doesn't carry variant ids,
+    // so resolve the first in-stock one instead of forcing every visit through the PDP.
+    setResolving(true);
+    try {
+      const full = await getProductBySlug(product.slug);
+      const variants = full?.variantsInfo?.variants || [];
+      const variant = variants.find((v) => v.inventoryStatus?.inStock) || variants[0];
+      if (variant) addToCart(product.id, variant.id);
+    } finally {
+      setResolving(false);
+    }
   };
+
+  const showQuickAdd = !isSoldOut && (isQuickAddable || hasOptions);
 
   return (
     <Link to={`/product/${product.slug}`} className="group block">
@@ -25,15 +47,15 @@ export default function ProductCard({ product }) {
         {promoBadge && (
           <span className="absolute top-3 left-3 text-[10px] tracking-wide-sm uppercase bg-foreground text-background px-2.5 py-1">{promoBadge.label}</span>
         )}
-        {isQuickAddable && !isSoldOut && (
-          <button onClick={quickAdd} disabled={loading}
+        {showQuickAdd && (
+          <button onClick={quickAdd} disabled={busy}
             className="absolute bottom-0 left-0 right-0 bg-foreground text-background text-[11px] tracking-wide-sm uppercase py-3.5 translate-y-full group-hover:translate-y-0 transition-transform duration-300 disabled:opacity-60">
-            Quick Add
+            {resolving ? "Adding…" : "Quick Add"}
           </button>
         )}
         {product.metafields?.aureva?.bundles && product.metafields.aureva.bundles.enabled && (
           <span className="absolute top-3 right-3 text-[8px] tracking-wide-sm uppercase bg-foreground/20 text-foreground/60 px-2 py-1 rounded-badge">
-            Bundle disponible
+            Bundle available
           </span>
         )}
       </div>
