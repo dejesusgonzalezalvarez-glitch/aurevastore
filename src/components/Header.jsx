@@ -30,20 +30,32 @@ export default function Header() {
 
   return (
     <header className={`sticky top-0 z-40 bg-background/90 backdrop-blur-md transition-shadow`}>
-      <div className="mx-auto max-w-7xl px-5">
-        <div className="flex items-center justify-between h-16">
-          <button className="flex items-center justify-center p-1 min-w-[44px] min-h-[44px] text-foreground" onClick={() => setOpen(true)} aria-label="Open menu">
-            <Menu size={24} strokeWidth={1.5} />
-          </button>
-
-          <div className="flex flex-1 items-center justify-center gap-2">
-            <Link to="/" className="font-display text-lg tracking-[0.25em] text-foreground font-medium select-none" aria-label="AUREVA home">
-              AUREVA
-            </Link>
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Left: hamburger on mobile, horizontal nav on desktop */}
+          <div className="flex-1 flex items-center">
+            <button className="md:hidden flex items-center justify-center p-1 min-w-[44px] min-h-[44px] text-foreground" onClick={() => setOpen(true)} aria-label="Open menu">
+              <Menu size={24} strokeWidth={1.5} />
+            </button>
+            <nav className="hidden md:flex items-center gap-8">
+              {NAV.map((n) => (
+                <Link key={n.label} to={n.to} className="text-[11px] tracking-wide-sm uppercase text-foreground/80 hover:text-foreground transition-colors">
+                  {n.label}
+                </Link>
+              ))}
+            </nav>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button onClick={() => setSearchOpen(true)} aria-label="Search" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground">
+          <Link to="/" className="font-display text-lg lg:text-2xl tracking-[0.25em] text-foreground font-medium select-none" aria-label="AUREVA home">
+            AUREVA
+          </Link>
+
+          {/* Right: search + cart on mobile, adds the CTA on desktop */}
+          <div className="flex-1 flex items-center justify-end gap-2 lg:gap-6">
+            <Link to={`/product/${HERO_SLUG}`} className="hidden md:inline-block text-[11px] tracking-wide-sm uppercase bg-foreground text-background px-5 py-2.5 hover:bg-foreground/85 transition-colors">
+              Create Yours
+            </Link>
+            <button onClick={() => setSearchOpen(true)} aria-label="Search" className="min-w-[44px] min-h-[44px] flex items-center justify-center text-foreground md:text-foreground/80 md:hover:text-foreground transition-colors">
               <Search size={22} strokeWidth={1.5} />
             </button>
             <CartButton />
@@ -52,8 +64,8 @@ export default function Header() {
 
         {open && (
           <>
-            <div className="fixed inset-0 z-40 bg-black/30" onClick={() => setOpen(false)} />
-            <nav className="fixed top-0 right-0 inset-y-0 z-50 w-80 max-w-sm bg-background shadow-luxe flex flex-col border-l border-border animate-fade-in">
+            <div className="md:hidden fixed inset-0 z-40 bg-black/30" onClick={() => setOpen(false)} />
+            <nav className="md:hidden fixed top-0 right-0 inset-y-0 z-50 w-80 max-w-sm bg-background shadow-luxe flex flex-col border-l border-border animate-fade-in">
               <div className="flex items-center justify-between px-4 py-3 border-b hairline">
                 <span className="font-display text-xl tracking-[0.25em]">AUREVA</span>
                 <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-1 min-w-[44px] min-h-[44px] flex items-center justify-center"><X size={24} strokeWidth={1.5} /></button>
